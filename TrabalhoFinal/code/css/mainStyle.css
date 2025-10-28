@@ -1,25 +1,32 @@
-/* Estilos Gerais */
+/* Variáveis de Cores */
 :root {
-    --corPrimaria: #0056b3;
-    --corSecundaria: #007bff;
-    --background: #e9ecef;
-    --warning: #dc3545;
-    --formulaTextColor: #343a40;
-    --lighter: #28a745;
+    --primary-color: #0056b3;        /* Azul Escuro (Cabeçalho, Títulos H2) */
+    --secondary-color: #007bff;      /* Azul Mais Claro (Títulos H3, Listas de garantia, Borda H4) */
+    --background-light: #f4f4f9;     /* Fundo Principal Claro */
+    --background-paper: white;       /* Fundo de Seções/Artigos */
+    --text-primary: #333;            /* Texto Principal */
+    --text-secondary: #343a40;       /* Títulos H4, Fórmulas */
+    --highlight-red: #dc3545;        /* Destaque (strong/Variáveis) */
+    --highlight-green-bg: #d4edda;   /* Fundo da Regra de Remoção (Verde Claro) */
+    --highlight-green-text: #28a745; /* Texto da Regra de Remoção (Verde Escuro) */
+    --highlight-formula-bg: #e9ecef; /* Fundo das Fórmulas */
+    --border-light: #ced4da;         /* Borda tracejada (Explicação Delta/Epsilon) */
+    --background-delta-exp: #f8f9fa; /* Fundo Explicação Delta/Epsilon */
 }
 
+/* Estilos Gerais */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9; /* Fundo claro */
-    color: #333; /* Cor de texto principal */
+    background-color: var(--background-light);
+    color: var(--text-primary);
 }
 
 /* Cabeçalho */
 header {
-    background-color: var(--corPrimaria); /* Cor primária - azul escuro */
+    background-color: var(--primary-color);
     color: white;
     padding: 20px 0;
     text-align: center;
@@ -40,7 +47,7 @@ main {
 
 /* Seções e Artigos */
 section, article {
-    background-color: white;
+    background-color: var(--background-paper);
     padding: 20px;
     margin-bottom: 30px;
     border-radius: 8px;
@@ -48,17 +55,26 @@ section, article {
 }
 
 h2 {
-    color: var(--corPrimaria); /* Cor primária */
-    border-bottom: 2px solid var(--corPrimaria);
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
     padding-bottom: 10px;
     margin-top: 0;
     font-size: 1.8em;
 }
 
 h3 {
-    color: var(--corSecundaria); 
+    color: var(--secondary-color);
     margin-top: 0;
     font-size: 1.4em;
+}
+
+h4 {
+    color: var(--text-secondary);
+    border-left: 4px solid var(--secondary-color);
+    padding-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
 }
 
 p {
@@ -78,49 +94,74 @@ li {
 }
 
 /* Fórmulas e Destaques */
+/* Estilo para a fórmula w = ⌈1 / ε⌉ */
 #bucketFormula {
     font-weight: bold;
-    font-style: normal;
-    background-color: var(--background); /* Fundo cinza claro para destacar */
-    padding: 10px;
-    border-radius: 4px;
-    display: inline-block; /* Para o fundo se ajustar ao texto */
-    margin: 15px 0;
-    font-size: 1.1em;
-    color: var(--formulaTextColor);
-}
-
-/* Estilo para as variáveis nas explicações */
-p strong {
-    color: var(--warning); /* Vermelho para destacar termos importantes/variáveis */
-    font-weight: 700;
-}
-
-/* Correção para o estilo da fórmula delta */
-#numeracaoDeBuckets p {
-    font-weight: bold;
     font-style: italic;
-    background-color: #e9ecef;
+    background-color: var(--highlight-formula-bg);
     padding: 10px;
     border-radius: 4px;
     display: inline-block;
     margin: 15px 0;
     font-size: 1.1em;
-    color: var(--formulaTextColor);
+    color: var(--text-secondary);
+}
+
+/* Estilo para a fórmula δ = current bucket ID - 1 */
+#deltaFormula {
+    font-weight: bold;
+    font-style: italic;
+    background-color: var(--highlight-formula-bg);
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: var(--text-secondary);
+}
+
+/* Explicação do Epsilon (novo div adicionado) */
+#epsilonExplanation {
+    border: 1px dashed var(--border-light);
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+    background-color: var(--background-delta-exp);
+}
+
+/* Explicação do Delta (div existente) */
+#deltaExplanation {
+    border: 1px dashed var(--border-light);
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+    background-color: var(--background-delta-exp);
+}
+
+/* Destaque de palavras-chave na explicação do Epsilon */
+#epsilonExplanation p strong {
+    color: var(--primary-color); /* Usando uma cor mais suave para variação */
 }
 
 /* Controle de dados (destaque da regra de remoção) */
-#bucketControl p:nth-of-type(2) { /* A regra de remoção */
+#bucketControl p:nth-of-type(2) { /* A regra de remoção: contagem + δ ≤ current bucket ID */
     font-weight: bold;
-    color: var(--lighter); 
-    background-color: #d4edda;
+    color: var(--highlight-green-text);
+    background-color: var(--highlight-green-bg);
     border: 1px solid #c3e6cb;
     padding: 10px;
     border-radius: 4px;
+    text-align: center;
 }
 
 /* Destaque dos pontos garantidos */
 #bucketControl ul {
     list-style-type: square;
-    color: var(--corSecundaria);
+    color: var(--secondary-color);
+}
+
+/* Destaque para termos importantes no texto (current bucket ID) */
+p strong {
+    color: var(--highlight-red);
+    font-weight: 700;
 }
