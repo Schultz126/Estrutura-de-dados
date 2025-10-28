@@ -1,0 +1,126 @@
+/* Estilos Gerais */
+:root {
+    --corPrimaria: #0056b3;
+    --corSecundaria: #007bff;
+    --background: #e9ecef;
+    --warning: #dc3545;
+    --formulaTextColor: #343a40;
+    --lighter: #28a745;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9; /* Fundo claro */
+    color: #333; /* Cor de texto principal */
+}
+
+/* Cabeçalho */
+header {
+    background-color: var(--corPrimaria); /* Cor primária - azul escuro */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+/* Conteúdo Principal */
+main {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Seções e Artigos */
+section, article {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: var(--corPrimaria); /* Cor primária */
+    border-bottom: 2px solid var(--corPrimaria);
+    padding-bottom: 10px;
+    margin-top: 0;
+    font-size: 1.8em;
+}
+
+h3 {
+    color: var(--corSecundaria); 
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+p {
+    margin: 10px 0;
+    text-align: justify;
+}
+
+/* Lista */
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* Fórmulas e Destaques */
+#bucketFormula {
+    font-weight: bold;
+    font-style: normal;
+    background-color: var(--background); /* Fundo cinza claro para destacar */
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block; /* Para o fundo se ajustar ao texto */
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: var(--formulaTextColor);
+}
+
+/* Estilo para as variáveis nas explicações */
+p strong {
+    color: var(--warning); /* Vermelho para destacar termos importantes/variáveis */
+    font-weight: 700;
+}
+
+/* Correção para o estilo da fórmula delta */
+#numeracaoDeBuckets p {
+    font-weight: bold;
+    font-style: italic;
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: var(--formulaTextColor);
+}
+
+/* Controle de dados (destaque da regra de remoção) */
+#bucketControl p:nth-of-type(2) { /* A regra de remoção */
+    font-weight: bold;
+    color: var(--lighter); 
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Destaque dos pontos garantidos */
+#bucketControl ul {
+    list-style-type: square;
+    color: var(--corSecundaria);
+}

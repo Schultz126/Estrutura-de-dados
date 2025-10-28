@@ -74,7 +74,7 @@ void lc_output(LCTable *T, long N, double support_threshold, double epsilon) {
     long threshold = (long)ceil(support_threshold * N);
     for (size_t i = 0; i < T->size; i++) {
         if (T->entries[i].count >= threshold) {
-            printf("Item %d: estimated count %ld (true >= %ld-epsilonN)\n",
+            printf("Item %d: estimated count %ld (true >= %ld-epsilon4 N)\n",
                    T->entries[i].item,
                    T->entries[i].count,
                    threshold);

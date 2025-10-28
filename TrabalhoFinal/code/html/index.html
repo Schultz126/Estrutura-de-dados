@@ -1,0 +1,56 @@
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/mainStyle.css">
+        <title>Lossy Counting</title>
+    </head>
+    <body>
+        <header>
+            <h1>
+                Lossy Counting
+            </h1>
+        </header>
+        <main>
+            <!--Pequena introdução acerca do lossy couting-->
+            <section id="intro">
+                <h2>O que é o algoritmo Lossy Counting?</h2>
+                <p>O algortimo Lossy Counting, ou Algoritmo de Contagem com Perda, identifica e aponta elementos dentro de um fluxo de dados (data stream), os quais aparecem com uma frequencia especificada pelo usuário. O algoritmo funciona dividindo os dados em janelas (buckets) para itens frequentes, mas preenchendo o máximo de grupos possíveis na memória principal. Como o nome do algoritmo indica, existem perdas no sistema de contagem, pois a frequência calculada nem sempre é precisa, porém, é possível para o usuário delimitar um limite de erro.</p>
+                <p></p>
+            </section>
+            <!--Explicação teórica acerca da divisão dos buckets-->
+            <section id="bucketAlgorithm">
+                <h2>Algoritmo de janelas (buckets)</h2>
+                <p>Para compreender o algoritmo lossy counting, primeiro é necessário compreender como a divisão das janelas</p>
+                <article id="define">
+                    <h3>Definição de janelas</h3>
+                    <p>No Lossy Counting, o fluxo é dividido em intervalos chamados janelas ou buckets que determinam quando itens podem ser removidos da tabela de contagem (count table).</p>
+                    <p>Tamanho do bucket é definido por:</p>
+                    <p id="bucketFormula">w = &lceil;1 / &epsilon;&rceil;</p>
+                    <p>Cada bucket possui w elementos consecutivos do stream.<br>Portanto, se &epsilon; = 0.2, então a janela terá 5 itens consecutivos do stream</p>
+                </article>
+                <article id="numeracaoDeBuckets">
+                    <h3>Nueração dos buckets</h3>
+                    <ul>
+                        <li>Cada bucket recebe um número sequencial (1, 2, 3, ...) chamado <strong>current bucket ID</strong></li>
+                        <li>Esse número é usado para calcular o &delta;; de cada item:</li>
+                        <p id="deltaFormula">&delta; = current bucket ID - 1</p>
+                        <li>O &delta; representa a incerteza máxima da contagem de um item.</li>
+                        <li>Ao subtrair 1 do valor da janela atual, indicamos que o item não pôde aparecer nos buckets anteriores.</li>
+                    </ul>
+                </article>
+                <article id="bucketControl">
+                    <h3>Controle de dados através dos buckets</h3>
+                    <p>O ponto central do Lossy Counting é o descarte de itens pouco frequentes, a fim de economizar memória. <br>Isto é feito da seguinte forma:</p>
+                    <p>Se ao final de um bucket, contagem + &delta; &le; <strong>current bucket ID</strong>, então o item é removido;</p>
+                    <p>Esta técnica garante:</p>
+                    <ul>
+                        <li>Itens com contagem baixa são removidos</li>
+                        <li>Itens frequentes permanecem com <strong>erro controlado</strong></li>
+                    </ul>
+                </article>
+            </section>
+        </main>
+    </body>
+    </html>
