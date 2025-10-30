@@ -15,7 +15,7 @@
             <!--Pequena introdução acerca do lossy couting-->
             <section id="intro">
                 <h2>O que é o algoritmo Lossy Counting?</h2>
-                <p>O algortimo Lossy Counting, ou Algoritmo de Contagem com Perda, identifica e aponta elementos dentro de um fluxo de dados (data stream), os quais aparecem com uma frequencia especificada pelo usuário. O algoritmo funciona dividindo os dados em janelas (buckets) para itens frequentes, mas preenchendo o máximo de grupos possíveis na memória principal. Como o nome do algoritmo indica, existem perdas no sistema de contagem, pois a frequência calculada nem sempre é precisa, porém, é possível para o usuário delimitar um limite de erro.</p>
+                <p>O Lossy Counting (Algoritmo de Contagem com Perda) é um método para identificar itens frequentes em um fluxo de dados (data stream) quando o armazenamento completo dos dados é impraticável. O algoritmo mantém uma tabela de contagem aproximada e divide o fluxo em janelas (buckets) de tamanho w = ⌈1/&epsilon;⌉. Periodicamente, ao fim de cada bucket, ele remove (faz pruning) os itens com baixa contagem para controlar o uso de memória. Embora parte da precisão seja perdida (daí o nome), o algoritmo oferece garantias teóricas sobre o erro, controlado pelo parâmetro ε, e assegura que itens verdadeiramente frequentes não sejam perdidos.</p>
                 <p></p>
             </section>
             <!--Explicação teórica acerca da divisão dos buckets-->
@@ -31,20 +31,25 @@
                     <div id="epsilonExplanation">
                         <h4>Uso real do &epsilon;</h4>
                         <p>Como é possível observar pela fórmula, quanto <strong>menor</strong> o valor de &epsilon; <strong>maior</strong> será o tamanho dos buckets, o que resulta em um maior custo de memória para armazenar todos os itens da janela, porém minimiza os erros, tendo em vista a menor variação do valor de &delta;.</p>
+                        <p>Esta troca entre memória e precisão pode ser visualizada no seguinte gráfico:</p>
+                        <div id="imgCenter">
+                            <img src="../../imagens/tradeoff-memoriaVSprecisao.png" alt="Gráfico tradeoff-memoriaVSprecisao">
+                        </div>
                     </div>
                 </article>
                 <article id="numeracaoDeBuckets">
                     <h3>Numeração dos buckets</h3>
                     <ul>
                         <li>Cada bucket recebe um número sequencial (1, 2, 3, ...) chamado <strong>current bucket ID</strong></li>
+                        <p class="formulaBlock">current bucket ID = [N / w]</p>
                         <li>Esse número é usado para calcular o &delta;; de cada item:</li>
-                        <p id="deltaFormula">&delta; = current bucket ID - 1</p>
+                        <p class="formulaBlock">&delta; = current bucket ID - 1</p>
                         <li>O &delta; representa a incerteza máxima da contagem de um item.</li>
                         <li>Ao subtrair 1 do valor da janela atual, indicamos que o item não pôde aparecer nos buckets anteriores.</li>
                     </ul>
                     <div id="deltaExplanation">
                         <h4>Uso real do &delta;</h4>
-                        <p>A fase de pruning será detalhada mais afrente, porém, em suma, ela consiste em remover buckets antigos e limpar a tabela de contagem a fim de preservar a memória. Neste processo, alguns itens podem ser perdidos (motivo pelo qual este é um algoritmo de perdas), o que impossibilita uma contagem precisa. Para contornar este problema, o cálculo do &delta; indica quantos itens podem ter existido antes da tabela de contagem ter sido limpa.</p>
+                        <p>A fase de pruning será detalhada adiante, porém, em suma, ela consiste em remover buckets antigos e limpar a tabela de contagem a fim de preservar a memória. Neste processo, alguns itens podem ser perdidos (motivo pelo qual este é um algoritmo de perdas), o que impossibilita uma contagem precisa. Para contornar este problema, o cálculo do &delta; indica quantos itens podem ter existido antes da tabela de contagem ter sido limpa.</p>
                     </div>
                 </article>
                 <article id="bucketControl">
@@ -58,25 +63,31 @@
                     </ul>
                 </article>
             </section>
-            <!--Explicações acerca do funcionamento do lossy counting-->
+            <!--Explicações do funcionamento do lossy counting-->
             <section id="algorithmExplanation">
                 <h2>Funcionamento do Lossy Counting</h2>
                 <p>Compreendendo como funcionam as estruturas utilizadas no algoritmo, podemos partir para o estudo de seu funcionamento como um todo</p>
                 <article id="datastream">
                     <h3>Ideia central</h3>
                     <p>No contexto de fluxo de dados, as informações não são armazenadas em memória, por virem de diversas fontes e em alta velocidade, o que faz necessário que estes dados sejam processados em tempo real. O algoritmo de lossy counting surge como opção para quantificar itens mais frequentes dentro deste fluxo.</p>
-                    <p>Como o peso computacional para armazenar toda a informação da datastream seria demasiado elevado, este algoritmo descarta iten</p>
+                    <p>Como o peso computacional para armazenar toda a informação da datastream seria muito elevado, este algoritmo descarta itens pouco frequentes enquanto "carrega" elementos para o bucket seguinte. Vale ressaltar que os buckets não são uma forma de armazenamento, mas sim um delimitador de tempo.</p>
+                </article>
+                <!--Explicação da fase de pruning-->
+                <article id="pruningExplanation">
+                    <h3>Fase de Pruning</h3>
+                    <p>O processo de pruning serve para limpar a tabela de contagem. Itens removidos tem sua contagem zerada na tabela, e caso apareçam novamente no stream receberão um novo valor de &delta;.</p>
+                    <p>Por exemplo, caso o número 4 tenha aparecido no stream no bucket 1, mas sua contagem foi baixa, ele será removido. Quando ele reaparecer no bucket 5, seu valor de &delta; será 4. Assim, cobrindo a margem de erro, pois não é possível saber se o item 4 apareceu antes do bucket 5.</p>
+                </article>
+                <article id="resumo">
                     <div id="highlights">
-                        <h4>Pontos importantes</h4>
+                        <!--Resumo dos pontos principais do algoritmo-->
+                        <h4>Resumo</h4>
                         <ul>
                             <li>Os dados não são armazenados em memória</li>
-
+                            <li>Buckets não são uma estrutura de armazenamento</li>
+                            <li>O &delta; indica o erro possível na contagem. O valor exato da frequência do elemento pode ser <span class="formula">count + &delta;</span>.</li>
                         </ul>
                     </div>
-                </article>
-                <article>
-                    <h3></h3>
-                    <p></p>
                 </article>
             </section>
             <section id="simulation">
@@ -84,7 +95,7 @@
                 <div id="infoStream">
                     <div id="countTable">
                         <h3>Tabela de contagem</h3>
-                        <p>Bucket atual: <span>1</span></p>
+                        <p class="info">Bucket atual: <span>1</span></p>
                         <div id="contagem">
 
                         </div>

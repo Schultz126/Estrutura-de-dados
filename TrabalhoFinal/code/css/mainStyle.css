@@ -121,6 +121,18 @@ li {
     color: var(--text-secondary);
 }
 
+.formulaBlock {
+    font-weight: bold;
+    font-style: italic;
+    background-color: var(--highlight-formula-bg);
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: var(--text-secondary);
+}
+
 /* Explicação do Epsilon (novo div adicionado) */
 #epsilonExplanation {
     border: 1px dashed var(--border-light);
@@ -128,6 +140,24 @@ li {
     margin-top: 20px;
     border-radius: 4px;
     background-color: var(--background-delta-exp);
+}
+
+#imgCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#imgCenter img {
+    flex: none;
+    width: 499px;
+    height: 300px;
+    margin: auto;
+
+    @media screen and (max-width: 768px){
+        width: 349px;
+        height: 210px;
+    }
 }
 
 /* Explicação do Delta (div existente) */
@@ -170,5 +200,17 @@ p strong {
 .legenda {
     color: var(--subtitle-color);
     font-size: 0.7rem;
+    margin: 0px;
+}
+
+.formula {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-weight: bolder;
+}
+
+.info {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
     margin: 0px;
 }
