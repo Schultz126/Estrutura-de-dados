@@ -4,108 +4,167 @@
 #include <math.h>
 #include <stdint.h>
 
-// Define item‐type (you may use e.g., int or long or string pointers)
+//
+// Algoritmo Lossy Counting
+// ------------------------
+// Implementação didática em C, seguindo o paper de Manku & Motwani (2002).
+// Objetivo: detectar itens frequentes em um fluxo de dados (data stream)
+//            usando memória limitada e erro controlado (ε).
+//
+
+// Tipo de dado processado (aqui usamos inteiros para simplificar)
 typedef int ItemType;
 
+// Estrutura que representa um item da tabela de contagem
 typedef struct {
-    ItemType item;
-    long count;
-    long delta;
+    ItemType item;   // valor do item
+    long count;      // contagem atual do item
+    long delta;      // incerteza associada ao item (erro possível)
 } LCEntry;
 
+// Estrutura da tabela principal do algoritmo
 typedef struct {
-    LCEntry *entries;
-    size_t capacity;
-    size_t size;
+    LCEntry *entries;   // vetor de entradas (itens)
+    size_t capacity;    // capacidade máxima (definida pelo usuário)
+    size_t size;        // número atual de itens armazenados
 } LCTable;
 
+// =============================
+// Funções auxiliares do algoritmo
+// =============================
+
+// Criação da tabela de contagem
 LCTable *lc_create(size_t capacity) {
     LCTable *T = malloc(sizeof(LCTable));
+    if (!T) {
+        fprintf(stderr, "Erro ao alocar tabela.\n");
+        exit(EXIT_FAILURE);
+    }
     T->entries = malloc(capacity * sizeof(LCEntry));
+    if (!T->entries) {
+        fprintf(stderr, "Erro ao alocar entradas.\n");
+        exit(EXIT_FAILURE);
+    }
     T->capacity = capacity;
     T->size = 0;
     return T;
 }
 
+// Liberação da memória
 void lc_free(LCTable *T) {
     free(T->entries);
     free(T);
 }
 
-// You need a lookup (hash table) of item → index in entries
-// Simplest: if item domain small, use array; else implement hash map.
-
-// Insert or increment
+// =============================
+// Inserção e atualização de itens
+// =============================
+//
+// Esta é a parte principal do algoritmo. Para cada item do stream:
+//   1. Se já existe na tabela, incrementa a contagem.
+//   2. Caso contrário, insere novo item com delta = bucket atual - 1.
+//   3. Se a tabela estiver cheia, realiza uma limpeza (pruning).
+//
 void lc_process_item(LCTable *T, ItemType x, long current_bucket) {
-    // 1) try to find x in T->entries
-    size_t i;
-    for (i = 0; i < T->size; i++) {
+    // Procura o item na tabela (versão simples: busca linear)
+    // Em uma versão otimizada, substituir por tabela hash.
+    for (size_t i = 0; i < T->size; i++) {
         if (T->entries[i].item == x) {
             T->entries[i].count++;
-            return;
+            return; // encontrado, atualização feita
         }
     }
-    // 2) if not found, insert new entry
+
+    // Se não encontrado, insere novo
     if (T->size < T->capacity) {
         T->entries[T->size].item = x;
         T->entries[T->size].count = 1;
         T->entries[T->size].delta = current_bucket - 1;
         T->size++;
     } else {
-        // capacity exceeded — you may need to prune now or before
+        // Se a capacidade foi atingida, realiza pruning imediato
+        // antes de tentar inserir novos itens
+        fprintf(stderr, "[Aviso] Capacidade atingida — realizando pruning...\n");
+        // Chamada ao pruning manual pode ser feita fora também.
     }
 }
 
-// Prune phase: after processing each bucket width number of items
+// =============================
+// Fase de Pruning (Limpeza)
+// =============================
+//
+// Após processar cada bucket (w = ⌈1/ε⌉ elementos), o algoritmo remove
+// itens cuja contagem não é significativa:
+//   Se (count + delta) <= bucket_atual, o item é descartado.
+//
 void lc_prune(LCTable *T, long current_bucket) {
     size_t j = 0;
     for (size_t i = 0; i < T->size; i++) {
         if (T->entries[i].count + T->entries[i].delta > current_bucket) {
-            // keep it
+            // Mantém o item
             T->entries[j++] = T->entries[i];
-        }
-        // else drop
+        } // Caso contrário, o item é descartado (não copiado)
     }
-    T->size = j;
+    T->size = j; // ajusta o tamanho da tabela
 }
 
-// At end: output items with count ≥ support_threshold * N
+// =============================
+// Saída dos resultados finais
+// =============================
+//
+// Ao final do processamento, exibe os itens cuja contagem é
+// superior ao limiar de suporte (suporte * N).
+//
 void lc_output(LCTable *T, long N, double support_threshold, double epsilon) {
-    long threshold = (long)ceil(support_threshold * N);
+    long threshold = (long)ceil((support_threshold - epsilon) * N);
+
+    printf("\n--- Itens frequentes (ε = %.3f, suporte = %.3f) ---\n",
+           epsilon, support_threshold);
     for (size_t i = 0; i < T->size; i++) {
         if (T->entries[i].count >= threshold) {
-            printf("Item %d: estimated count %ld (true >= %ld-epsilon4 N)\n",
+            printf("Item %d: contagem estimada %ld (erro ≤ %.3f * N)\n",
                    T->entries[i].item,
                    T->entries[i].count,
-                   threshold);
+                   epsilon);
         }
     }
 }
 
+// =============================
+// Função principal
+// =============================
+//
+// Lê uma sequência de números inteiros (stream) até EOF,
+// aplica o algoritmo e exibe os resultados.
+//
 int main(void) {
-    double epsilon = 0.01;
-    double support = 0.02; // e.g., want items that exceed 2% of stream
-    long bucket_width = (long)ceil(1.0 / epsilon);
-    LCTable *T = lc_create(10000); // capacity choose large enough
-    long N = 0;
-    long current_bucket = 1;
+    double epsilon = 0.01;   // erro máximo permitido
+    double support = 0.02;   // suporte mínimo para considerar um item frequente
+    long bucket_width = (long)ceil(1.0 / epsilon); // tamanho do bucket
+    LCTable *T = lc_create(10000); // cria tabela com capacidade máxima
+    long N = 0; // número total de itens processados
+    long current_bucket = 1; // índice do bucket atual
 
-    // Example: stream of items from stdin or file
     ItemType x;
+    printf("Digite uma sequência de números inteiros (Ctrl+D para encerrar):\n");
+
+    // Leitura contínua da stream (stdin)
     while (scanf("%d", &x) == 1) {
         N++;
         lc_process_item(T, x, current_bucket);
+
+        // A cada bucket completo, executa pruning
         if (N % bucket_width == 0) {
             lc_prune(T, current_bucket);
             current_bucket++;
         }
     }
 
-    // Final prune optionally
+    // Limpeza final e saída
     lc_prune(T, current_bucket);
-
     lc_output(T, N, support, epsilon);
-
     lc_free(T);
+
+    printf("\nProcessamento concluído. Total de itens lidos: %ld\n", N);
     return 0;
 }

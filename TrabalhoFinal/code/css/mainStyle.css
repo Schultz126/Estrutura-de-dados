@@ -161,7 +161,7 @@ li {
 }
 
 /* Explicação do Delta (div existente) */
-#deltaExplanation {
+.explanationBox {
     border: 1px dashed var(--border-light);
     padding: 15px;
     margin-top: 20px;
