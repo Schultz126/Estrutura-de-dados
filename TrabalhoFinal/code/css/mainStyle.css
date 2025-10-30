@@ -12,6 +12,7 @@
     --highlight-formula-bg: #e9ecef; /* Fundo das Fórmulas */
     --border-light: #ced4da;         /* Borda tracejada (Explicação Delta/Epsilon) */
     --background-delta-exp: #f8f9fa; /* Fundo Explicação Delta/Epsilon */
+    --subtitle-color: #343a408a;
 }
 
 /* Estilos Gerais */
@@ -164,4 +165,10 @@ li {
 p strong {
     color: var(--highlight-red);
     font-weight: 700;
+}
+
+.legenda {
+    color: var(--subtitle-color);
+    font-size: 0.7rem;
+    margin: 0px;
 }

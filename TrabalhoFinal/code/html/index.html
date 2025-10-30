@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../css/mainStyle.css">
+        <link rel="stylesheet" href="../css/streamStyle.css">
         <title>Lossy Counting</title>
     </head>
     <body>
@@ -29,7 +30,7 @@
                     <p>Cada bucket possui w elementos consecutivos do stream.<br>Portanto, se &epsilon; = 0.2, então a janela terá 5 itens consecutivos do stream</p>
                     <div id="epsilonExplanation">
                         <h4>Uso real do &epsilon;</h4>
-                        <p>Como é possível observar pela fórmula, quanto <strong>menor</strong> o valor de &epsilon; <strong>maior</strong> será o tamanho dos buckets, o que resulta em um maior custo de memória para armazenar todos os itens da janela, porém minimiza os erros, tendo em vista a menor variação do valor de &delta;.   </p>
+                        <p>Como é possível observar pela fórmula, quanto <strong>menor</strong> o valor de &epsilon; <strong>maior</strong> será o tamanho dos buckets, o que resulta em um maior custo de memória para armazenar todos os itens da janela, porém minimiza os erros, tendo em vista a menor variação do valor de &delta;.</p>
                     </div>
                 </article>
                 <article id="numeracaoDeBuckets">
@@ -62,9 +63,47 @@
                 <h2>Funcionamento do Lossy Counting</h2>
                 <p>Compreendendo como funcionam as estruturas utilizadas no algoritmo, podemos partir para o estudo de seu funcionamento como um todo</p>
                 <article id="datastream">
-                    <h3>Datastream</h3>
-                    <p>No contexto de fluxo de dados, as informações não são armazenadas, por virem de diversas fontes e em alta velocidade, o que faz necessário que estes dados sejam processados em tempo real. O algoritmo de lossy counting surge como opção para quantificar itens mais frequentes dentro deste fluxo.</p>
+                    <h3>Ideia central</h3>
+                    <p>No contexto de fluxo de dados, as informações não são armazenadas em memória, por virem de diversas fontes e em alta velocidade, o que faz necessário que estes dados sejam processados em tempo real. O algoritmo de lossy counting surge como opção para quantificar itens mais frequentes dentro deste fluxo.</p>
+                    <p>Como o peso computacional para armazenar toda a informação da datastream seria demasiado elevado, este algoritmo descarta iten</p>
+                    <div id="highlights">
+                        <h4>Pontos importantes</h4>
+                        <ul>
+                            <li>Os dados não são armazenados em memória</li>
+
+                        </ul>
+                    </div>
                 </article>
+                <article>
+                    <h3></h3>
+                    <p></p>
+                </article>
+            </section>
+            <section id="simulation">
+                <h2>Representação Visual</h2>
+                <div id="infoStream">
+                    <div id="countTable">
+                        <h3>Tabela de contagem</h3>
+                        <p>Bucket atual: <span>1</span></p>
+                        <div id="contagem">
+
+                        </div>
+                    </div>
+                    <div id="configuracoes">
+                        <button>Iniciar</button>
+                        <button>Próximo passo</button>
+                    </div>
+                </div>
+                <div id="stream">
+                    <div class="element"></div>
+                    <div class="element"></div>
+                    <div class="element"></div>
+                    <div class="element"></div>
+                    <div class="element"></div>
+                    <div class="element"></div>
+                    <div class="element"></div>
+                </div>
+                <p class="legenda">Tamanho do bucket = 7</p>
             </section>
         </main>
     </body>

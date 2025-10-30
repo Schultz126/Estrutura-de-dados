@@ -1,0 +1,105 @@
+/* Variáveis de Cores */
+:root {
+    --primary-color: #0056b3;        /* Azul Escuro (Cabeçalho, Títulos H2) */
+    --secondary-color: #007bff;      /* Azul Mais Claro (Títulos H3, Listas de garantia, Borda H4) */
+    --background-light: #f4f4f9;     /* Fundo Principal Claro */
+    --background-paper: white;       /* Fundo de Seções/Artigos */
+    --text-primary: #333;            /* Texto Principal */
+    --text-secondary: #343a40;       /* Títulos H4, Fórmulas */
+    --highlight-red: #dc3545;        /* Destaque (strong/Variáveis) */
+    --highlight-green-bg: #d4edda;   /* Fundo da Regra de Remoção (Verde Claro) */
+    --highlight-green-text: #28a745; /* Texto da Regra de Remoção (Verde Escuro) */
+    --highlight-formula-bg: #e9ecef; /* Fundo das Fórmulas */
+    --border-light: #ced4da;         /* Borda tracejada (Explicação Delta/Epsilon) */
+    --background-delta-exp: #f8f9fa; /* Fundo Explicação Delta/Epsilon */
+    --subtitle-color: #343a408a;
+}
+
+/* Div com display flex para segurar as caixas em que está a stream*/
+div#stream {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+/* Estilo das caixas individuais */
+div.element {
+    flex: 0 1 100px;
+    height: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.225);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin: 10px;
+}
+
+div#infoStream {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+     div#infoStream {
+     flex-flow: column; /* Muda a direção para vertical */
+ }
+}
+
+div#countTable, div#configuracoes {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.225);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+div#countTable {
+    flex: 2;
+}
+
+div#configuracoes {
+    flex: 1; /* Proporção de 1/3 (como definido antes) */
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.225);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    /* Novas propriedades para organizar os botões: */
+    display: flex;
+    flex-direction: column; /* Empilha os botões verticalmente */
+    gap: 10px; /* Adiciona um espaço de 10px entre os botões */
+}
+
+div#configuracoes button {
+    /* Cores (usando suas variáveis) */
+    background-color: var(--primary-color);
+    color: var(--background-paper); /* Texto branco */
+
+    /* Espaçamento e Borda */
+    border: none; /* Remove a borda padrão */
+    padding: 12px 15px;
+    border-radius: 8px; /* Cantos arredondados, um pouco menos que o container */
+
+    /* Texto */
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    
+    /* Interatividade */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+div#configuracoes button:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+div#configuracoes button:active {
+    transform: scale(0.98); /* Levemente menor ao clicar */
+    background-color: var(--primary-color);
+}
+
+div#countTable h3 {
+    color: var(--text-primary);
+    margin-bottom: 0px;
+}
