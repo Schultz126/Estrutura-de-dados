@@ -1,8 +1,106 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <stdint.h>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementação Lossy Counting em C</title>
+
+<style>
+/* ===============================
+   Paleta de cores harmonizada
+   =============================== */
+:root {
+    --primary-color: #004080;         /* Azul marinho — cabeçalhos principais */
+    --secondary-color: #1e90ff;       /* Azul vibrante — subtítulos, links */
+    --accent-color: #17a2b8;          /* Azul petróleo — realces técnicos */
+    
+    --background-light: #f5f7fa;      /* Fundo geral */
+    --background-paper: #ffffff;      /* Fundo de cartões e blocos */
+    
+    --text-primary: #212529;          /* Texto principal */
+    --text-secondary: #495057;        /* Texto de apoio */
+    
+    --highlight-red: #dc3545;         /* Destaque de erro */
+    --highlight-green-bg: #e6f4ea;    /* Fundo de sucesso */
+    --highlight-green-text: #198754;  /* Texto de sucesso */
+    
+    --highlight-formula-bg: #f1f3f5;  /* Fundo para blocos de código */
+    --border-light: #dee2e6;          /* Borda sutil */
+    --background-delta-exp: #f8f9fa;  /* Fundo de explicações */
+    
+    --subtitle-color: #6c757d;        /* Subtítulos */
+    --shadow-color: rgba(0, 0, 0, 0.05); /* Sombras suaves */
+}
+
+/* ===============================
+   Estilo geral
+   =============================== */
+body {
+    background-color: var(--background-light);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+h1 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 0.4em;
+}
+
+h2 {
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 5px;
+}
+
+p {
+    color: var(--text-secondary);
+}
+
+pre {
+    background-color: var(--highlight-formula-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 14px;
+    box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+code {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.container {
+    background-color: var(--background-paper);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    padding: 20px;
+    width: 100%;
+    margin: auto;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--subtitle-color);
+    margin-top: 30px;
+}
+</style>
+</head>
+
+<body>
+    <pre><code>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;math.h&gt;
+#include &lt;stdint.h&gt;
 
 //
 // Algoritmo Lossy Counting
@@ -64,7 +162,7 @@ void lc_free(LCTable *T) {
 void lc_process_item(LCTable *T, ItemType x, long current_bucket) {
     // Procura o item na tabela (versão simples: busca linear)
     // Em uma versão otimizada, substituir por tabela hash.
-    for (size_t i = 0; i < T->size; i++) {
+    for (size_t i = 0; i &lt; T->size; i++) {
         if (T->entries[i].item == x) {
             T->entries[i].count++;
             return; // encontrado, atualização feita
@@ -72,7 +170,7 @@ void lc_process_item(LCTable *T, ItemType x, long current_bucket) {
     }
 
     // Se não encontrado, insere novo
-    if (T->size < T->capacity) {
+    if (T->size &lt; T->capacity) {
         T->entries[T->size].item = x;
         T->entries[T->size].count = 1;
         T->entries[T->size].delta = current_bucket - 1;
@@ -91,11 +189,11 @@ void lc_process_item(LCTable *T, ItemType x, long current_bucket) {
 //
 // Após processar cada bucket (w = ⌈1/ε⌉ elementos), o algoritmo remove
 // itens cuja contagem não é significativa:
-//   Se (count + delta) <= bucket_atual, o item é descartado.
+//   Se (count + delta) &lt;= bucket_atual, o item é descartado.
 //
 void lc_prune(LCTable *T, long current_bucket) {
     size_t j = 0;
-    for (size_t i = 0; i < T->size; i++) {
+    for (size_t i = 0; i &lt; T->size; i++) {
         if (T->entries[i].count + T->entries[i].delta > current_bucket) {
             // Mantém o item
             T->entries[j++] = T->entries[i];
@@ -116,7 +214,7 @@ void lc_output(LCTable *T, long N, double support_threshold, double epsilon) {
 
     printf("\n--- Itens frequentes (ε = %.3f, suporte = %.3f) ---\n",
            epsilon, support_threshold);
-    for (size_t i = 0; i < T->size; i++) {
+    for (size_t i = 0; i &lt; T->size; i++) {
         if (T->entries[i].count >= threshold) {
             printf("Item %d: contagem estimada %ld (erro ≤ %.3f * N)\n",
                    T->entries[i].item,

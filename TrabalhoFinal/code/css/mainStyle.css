@@ -185,6 +185,13 @@ li {
     text-align: center;
 }
 
+#codigoComentado iframe {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 550px;
+}
+
 /* Destaque dos pontos garantidos */
 #bucketControl ul {
     list-style-type: square;
@@ -213,4 +220,9 @@ p strong {
     color: var(--text-secondary);
     font-size: 0.8rem;
     margin: 0px;
+}
+
+.turnedOff {
+    background-color: var(--highlight-formula-bg);
+    color: var(--subtitle-color);
 }

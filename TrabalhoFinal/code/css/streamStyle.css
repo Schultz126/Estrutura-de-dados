@@ -103,3 +103,22 @@ div#countTable h3 {
     color: var(--text-primary);
     margin-bottom: 0px;
 }
+
+div#configuracoes button.turnedOff {
+    background-color: var(--highlight-formula-bg); 
+    color: var(--subtitle-color); 
+    
+    /* Remover interatividade */
+    cursor: not-allowed; /* Mostra o ícone de 'não permitido' */
+    box-shadow: none;
+}
+
+div#configuracoes button.turnedOff:hover {
+    background-color: var(--highlight-formula-bg); 
+    box-shadow: none; 
+}
+
+div#configuracoes button.turnedOff:active {
+    transform: none; 
+    background-color: var(--highlight-formula-bg); 
+}
