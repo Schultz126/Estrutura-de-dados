@@ -3,8 +3,8 @@
     --------[Explicação técnica detalhada]
     - Visualização interativa ou animação
     --------[Exemplos de código comentados]
-    - Análise de complexidade
-    - Aplicações práticas
+    --------[Análise de complexidade]
+    --------[Aplicações práticas]
     - Comparação com estruturas similares
     --------[Referências bibliográficas]
 -->
@@ -14,7 +14,7 @@
     - Visualização do processamento de stream
     - Demonstração de pruning de elementos não-frequentes
     --------[Análise de garantias de erro (ε, δ)]
-    - Implementação em C com stream simulado
+    --------[Implementação em C com stream simulado]
     --------[Gráfico: uso de memória vs. precisão]
 -->
 <!DOCTYPE html>
@@ -35,7 +35,6 @@
         <section id="intro">
             <h2>O que é o algoritmo Lossy Counting?</h2>
             <p>O Lossy Counting (Algoritmo de Contagem com Perda) é um método para identificar itens frequentes em um fluxo de dados (data stream) quando o armazenamento completo dos dados é impraticável. O algoritmo mantém uma tabela de contagem aproximada e divide o fluxo em janelas (buckets) de tamanho w = ⌈1/&epsilon;⌉. Periodicamente, ao fim de cada bucket, ele remove (faz pruning) os itens com baixa contagem para controlar o uso de memória. Embora parte da precisão seja perdida (daí o nome), o algoritmo oferece garantias teóricas sobre o erro, controlado pelo parâmetro ε, e assegura que itens verdadeiramente frequentes não sejam perdidos.</p>
-            <p></p>
         </section>
         <section id="contextoHistórico">
             <h2>Contexto Histórico</h2>
@@ -71,13 +70,14 @@
                 <h3>Definição de janelas</h3>
                 <p>No Lossy Counting, o fluxo é dividido em intervalos chamados janelas ou buckets que determinam quando itens podem ser removidos da tabela de contagem (count table).</p>
                 <p>Tamanho do bucket é definido por:</p>
-                <p id="bucketFormula">w = &lceil;1 / &epsilon;&rceil;</p>
+                <p id="bucketFormula" class="formulaBlock">w = &lceil;1 / &epsilon;&rceil;</p>
                 <p>Cada bucket possui w elementos consecutivos do stream.<br>Portanto, se &epsilon; = 0.2, então a janela terá 5 itens consecutivos do stream</p>
-                <div id="epsilonExplanation">
-                    <h4>Uso real do &epsilon;</h4>
+                <div id="epsilonExplanation" class="explanationBox">
+                    <h4>Uso do &epsilon;</h4>
                     <p>Como é possível observar pela fórmula, quanto <strong>menor</strong> o valor de &epsilon; <strong>maior</strong> será o tamanho dos buckets, o que resulta em um maior custo de memória para armazenar todos os itens da janela, porém minimiza os erros, tendo em vista a menor variação do valor de &delta;.</p>
                     <p>Esta troca entre memória e precisão pode ser visualizada no seguinte gráfico:</p>
                     <div id="imgCenter">
+                        <!--Utilizei a imagem original pois baixando a qualidade não era possível enxergar a escala-->
                         <img src="../../imagens/tradeoff-memoriaVSprecisao.png" alt="Gráfico tradeoff-memoriaVSprecisao">
                     </div>
                 </div>
@@ -87,13 +87,14 @@
                 <ul>
                     <li>Cada bucket recebe um número sequencial (1, 2, 3, ...) chamado <strong>current bucket ID</strong></li>
                     <p class="formulaBlock">current bucket ID = [N / w]</p>
-                    <li>Esse número é usado para calcular o &delta;; de cada item:</li>
+                    <li>Este número é usado para calcular o &delta;; de cada item;</li>
+                    <li>N pode ser comparado com o "índice" do elemnto atual;</li>
                     <p class="formulaBlock">&delta; = current bucket ID - 1</p>
-                    <li>O &delta; representa a incerteza máxima da contagem de um item.</li>
+                    <li>O &delta; representa a incerteza máxima da contagem de um item;</li>
                     <li>Ao subtrair 1 do valor da janela atual, indicamos que o item não pôde aparecer nos buckets anteriores.</li>
                 </ul>
                 <div id="deltaExplanation" class="explanationBox">
-                    <h4>Uso real do &delta;</h4>
+                    <h4>Uso do &delta;</h4>
                     <p>A fase de pruning será detalhada adiante, porém, em suma, ela consiste em remover buckets antigos e limpar a tabela de contagem a fim de preservar a memória. Neste processo, alguns itens podem ser perdidos (motivo pelo qual este é um algoritmo de perdas), o que impossibilita uma contagem precisa. Para contornar este problema, o cálculo do &delta; indica quantos itens podem ter existido antes da tabela de contagem ter sido limpa.</p>
                 </div>
             </article>
@@ -103,8 +104,8 @@
                 <p>Se ao final de um bucket, contagem + &delta; &le; <strong>current bucket ID</strong>, então o item é removido;</p>
                 <p>Esta técnica garante:</p>
                 <ul>
-                    <li>Itens com contagem baixa são removidos</li>
-                    <li>Itens frequentes permanecem com <strong>erro controlado</strong></li>
+                    <li>Itens com contagem baixa são removidos;</li>
+                    <li>Itens frequentes permanecem com <strong>erro controlado</strong>.</li>
                 </ul>
             </article>
         </section>
@@ -122,6 +123,12 @@
                 <h3>Fase de Pruning</h3>
                 <p>O processo de pruning serve para limpar a tabela de contagem. Itens removidos tem sua contagem zerada na tabela, e caso apareçam novamente no stream receberão um novo valor de &delta;.</p>
                 <p>Por exemplo, caso o número 4 tenha aparecido no stream no bucket 1, mas sua contagem foi baixa, ele será removido. Quando ele reaparecer no bucket 5, seu valor de &delta; será 4. Assim, cobrindo a margem de erro, pois não é possível saber se o item 4 apareceu antes do bucket 5.</p>
+                <article id="removeCondition">
+                    <h3>Condição de Remoção</h3>
+                    <p>Ainda que tenha sido falado anteriormente, é importante ressaltar a fórmula utilizada para determinar se um item será removido da tabela, pois consiste em em uma parte crucial do funcionamento do código.</p>
+                    <p class="formulaBlock">count + &delta; &le; current bucket ID</p>
+                    <p>Itens que satisfazem esta condição são removidos.</p>
+                </article>
             </article>
             <article id="resumo">
                 <div id="highlights">
@@ -135,9 +142,78 @@
                 </div>
             </article>
         </section>
+        <!--Painel com o código em C-->
         <section id="codigoComentado">
             <h2>Código comentado em C</h2>
             <iframe src="lossyCountingCode.html" frameborder="0"></iframe>
+            <p>O algoritmo Lossy Count possui complexidade de tempo O(n/&epsilon;), em que n é o número total de itens, e complexidade de espaço O(1/&epsilon;). Esta implementação em específico é somente um exemplo com capacidade fixa, o que torna a complexidade de espaço O(K), em que K é uma contante.</p>
+        </section>
+        <!--Aplicações reais do algoritmo Lossy Count-->
+        <section id="aplicacoes">
+            <h2>Aplicações Práticas</h2>
+            <p>As aplicações foram listadas no documento original de Manku e Motwani.</p>
+            <article>
+                <h3>Monitoramento de Tráfego de Rede</h3>
+                <ul>
+                    <li>Lossy Counting para identificar os endereços IP, portas ou protocolos mais ativos em redes de alta velocidade;</li>
+                    <li>Ajuda na detecção de ataques DDoS e no controle de congestionamentos;</li>
+                    <li>O pruning automático remove fluxos irrelevantes, mantendo apenas os “principais falantes” da rede.</li>
+                </ul>
+            </article>
+            <article>
+                <h3>Mineração de Padrões Frequentes em Fluxo de Dados</h3>
+                <ul>
+                    <li>Esta é a aplicação clássica do Lossy Counting. O algoritmo é usado para encontrar itens ou padrões que aparecem com frequência em fluxos contínuos, por exemplo, eventos de sensores, logs ou transações;</li>
+                    <li>Ele permite processar dados infinitos em tempo real, sem precisar armazenar tudo na memória;</li>
+                    <li>Análise de logs, pacotes de rede ou registros de transações financeiras.</li>
+                </ul>
+            </article>
+            <article>
+                <h3>Análise de Consulta e Logs de Banco de Dados</h3>
+                <ul>
+                    <li>Em grandes sistemas de banco de dados (como Oracle, PostgreSQL, MongoDB), o Lossy Counting pode registrar as consultas mais frequentes sem sobrecarregar o sistema;</li>
+                    <li>Permite otimizar índices, cache e políticas de replicação;</li>
+                    <li>Fornece uma visão estatística contínua do comportamento do sistema.</li>
+                </ul>
+            </article>
+            <article>
+                <h3>E-commerce e Recomendação de Produtos</h3>
+                <ul>
+                    <li>O artigo menciona o uso em plataformas de comércio eletrônico para identificar produtos mais acessados ou comprados em tempo real;</li>
+                    <li>Possibilita rankings de “tendências do momento” e sistemas de recomendação baseados em popularidade;</li>
+                    <li>Aqui, o Lossy Counting serve como um mecanismo de pré-filtragem eficiente antes da etapa de recomendação mais complexa.</li>
+                </ul>
+            </article>
+            <article>
+                <h3>Sistemas de Segurança e Detecção de Fraudes</h3>
+                <ul>
+                    <li>O artigo sugere o uso do Lossy Counting em sistemas antifraude para identificar usuários, dispositivos ou padrões que aparecem com frequência suspeita;</li>
+                    <li>Detecta comportamentos anormais sem exigir processamento de todos os registros históricos;</li>
+                    <li>Detecção de cartões clonados, acessos suspeitos ou ataques automatizados.</li>
+                </ul>
+            </article>
+            <article>
+                <h3>Redes Sociais e Tendências</h3>
+                <ul>
+                    <li>O Lossy Counting também aparece aplicado à identificação de hashtags, termos ou tópicos mais mencionados em redes sociais como Twitter e Reddit;</li>
+                    <li>Permite calcular tendências em tempo real, ajustando-se às variações do volume de dados;</li>
+                    <li>É uma base conceitual para algoritmos de detecção de trending topics.</li>
+                </ul>
+            </article>
+        </section>
+        <!--Algoritmos semelhantes e em que diferem do Lossy Count-->
+        <section id="Algoritmos Semelhantes">
+            <h2>Algoritmos Semelhantes</h2>
+            <p>O Lossy Counting não é o único algoritmo utilizado para processar streams. Outras aplicações com o mesmo intuito são amplamente utilizadas.</p>
+            <article>
+                <h3>Space-Saving Algorithm</h3>
+            </article>
+            <article>
+                <h3>Count-Min Sketch</h3>
+            </article>
+            <article>
+                <h3>Frequent Algorithm</h3>
+            </article>
         </section>
         <section id="simulation">
             <h2>Representação Visual</h2>
