@@ -25,6 +25,7 @@ body {
     padding: 0;
     background-color: var(--background-light);
     color: var(--text-primary);
+    min-width: 320px;
 }
 
 /* Cabeçalho */
@@ -243,7 +244,6 @@ p strong {
     border-bottom: 1px solid var(--primary-color);
 }
 
-/* 🦶 Estilos Específicos para o Rodapé (Footer) */
 footer {
     background-color: var(--footer-bg); /* Fundo escuro */
     color: var(--footer-text); /* Texto claro */
@@ -283,4 +283,60 @@ footer ul::before {
     font-weight: bold;
     color: var(--footer-text);
     margin-right: 5px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 2.2em; /* Reduz o título principal */
+    }
+
+    h2 {
+        font-size: 1.6em; /* Reduz os títulos de seção */
+    }
+
+    h3 {
+        font-size: 1.3em;
+    }
+    
+    p {
+        text-align: left; /* Melhora a legibilidade em telas estreitas */
+    }
+
+    main {
+        margin-top: 20px;
+        padding: 0 15px; /* Reduz o preenchimento lateral */
+    }
+
+    section, article {
+        padding: 15px; /* Reduz o preenchimento interno */
+        margin-bottom: 20px;
+    }
+    
+    #epsilonExplanation, #deltaExplanation {
+        padding: 10px;
+    }
+    
+    #bucketControl p:nth-of-type(2) {
+        /* Garante que a regra não fique estranha */
+        line-height: 1.4;
+    }
+
+    /* Rodapé */
+    footer p {
+        padding: 0 15px;
+    }
+
+    footer ul::before {
+        display: block; /* Coloca "Autores:" em sua própria linha */
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    footer li {
+        display: block;  /* Empilha os nomes dos autores */
+        margin: 8px 0;   /* Adiciona espaço vertical entre os nomes */
+        color: var(--footer-text); /* Muda a cor para combinar com o resto */
+    }
 }
