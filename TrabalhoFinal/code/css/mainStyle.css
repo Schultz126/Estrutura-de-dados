@@ -305,13 +305,13 @@ footer ul::before {
     }
 
     main {
-        margin-top: 20px;
-        padding: 0 15px; /* Reduz o preenchimento lateral */
+        margin-top: 0px;
+        padding: 0px; /* Reduz o preenchimento lateral */
     }
 
     section, article {
-        padding: 15px; /* Reduz o preenchimento interno */
-        margin-bottom: 20px;
+        padding: 12px; /* Reduz o preenchimento interno */
+        margin-bottom: 0px;
     }
     
     #epsilonExplanation, #deltaExplanation {
