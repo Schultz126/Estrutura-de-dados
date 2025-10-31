@@ -194,7 +194,9 @@ p strong {
 .info {
     color: var(--text-secondary);
     font-size: 0.8rem;
-    margin: 0px;
+    margin: 0px 7px 0px 0px;
+    display: inline;
+    
 }
 
 .turnedOff {
@@ -204,7 +206,7 @@ p strong {
 
 .italic {
     font-style: italic;
-    font-weight: lighter;
+    font-weight: normal;
 }
 
 /* Estilo para os links (a) */

@@ -39,15 +39,14 @@
         <section id="contextoHistórico">
             <h2>Contexto Histórico</h2>
             <article id="antescedentes">
-                <h3>Antescedentes nos estudo de fluxo de dados</h3>
+                <h3>Antecedentes nos estudos de fluxo de dados</h3>
                 <p>A área de algoritmos para streams de dados (data streams) começou a ganhar fôlego na década de 1990, quando se tornou claro que muitos dados não podiam ser armazenados inteiramente e depois processados, por exemplo, logs de servidores, tráfego de rede, etc.</p>
-                <p>Dentro desse contexto surgiu o problema dos itens frequentes (frequent items) ou heavy hitters, ou seja, “quais itens aparecem com frequência significativa no stream?” Esse problema já possuía soluções clássicas para datasets armazenados (por exemplo a abordagem de Misra-Gries de 1982) que foram generalizadas para o contexto de fluxo único.</p>
+                <p>Dentro desse contexto, surgiu o problema dos itens frequentes (frequent items) ou heavy hitters, ou seja, “quais itens aparecem com frequência significativa no stream?” Esse problema já possuía soluções clássicas para datasets armazenados (por exemplo a abordagem de Misra-Gries de 1982) que foram generalizadas para o contexto de fluxo único.</p>
                 <p>Um dos desafios era: ao processar um stream de alta velocidade, com enorme volume, a memória e o tempo por item devem permanecer baixos (idealmente constante ou perto disso). Assim, tornou-se necessário desenvolver resumos (sketches / summaries) que mantivessem o essencial da informação sem armazenar tudo.</p>
             </article>
             <article id="surgimento">
                 <h3>Surgimento do Lossy Count</h3>
                 <p>Em 2002, Gurmeet Singh Manku e Rajeev Motwani publicaram o artigo “Approximate Frequency Counts over Data Streams” na conferência VLDB 2002.</p>
-                <p>Nesse trabalho, eles propuseram o algoritmo Lossy Counting como uma solução determinística (não baseada em amostragem aleatória) para o problema de frequent items em streams, com garantias de erro controladas.</p>
                 <p>Nesse trabalho, eles propuseram o algoritmo Lossy Counting como uma solução determinística (não baseada em amostragem aleatória) para o problema de frequent items em streams, com garantias de erro controladas.</p>
             </article>
             <article id="relevancia">
@@ -55,7 +54,7 @@
                 <p>O artigo de Manku & Motwani foi citado amplamente e considerado um dos “best papers” em seu tempo em streaming / resumo de dados.</p>
                 <p>Ele abriu caminho para diversas variantes e estudos sobre algoritmos de resumo para fluxos, tais como o algoritmo Space-Saving, o esboço de contagens de frequência probabilísticas (ex: sketches), o modelo de janelas deslocantes (sliding window) etc.</p>
                 <p>Em particular, porque o método era relativamente simples de entender e implementar, ele mostrou como era possível obter memória sublinear no tamanho do stream (dependendo de 1/ε) com erro controlado, uma forma viável para aplicações em tempo real, logs, redes e análise contínua.</p>
-                <p>Como mencionado, algoritmos como o de Misra-Gries já tratavam itens frequentes em sequências estáticas, mas não diretamente no contexto de streams com memória limitada e necessidade de resposta imediata.Há, também, algoritmos baseados em amostragem (ex: Sticky Sampling) que foram propostos no mesmo trabalho de Manku & Motwani. O Lossy Counting se destaca por não depender de aleatoriedade.</p>
+                <p>Como mencionado, algoritmos como o de Misra-Gries já tratavam itens frequentes em sequências estáticas, mas não diretamente no contexto de streams com memória limitada e necessidade de resposta imediata. Há, também, algoritmos baseados em amostragem (ex: Sticky Sampling) que foram propostos no mesmo trabalho de Manku & Motwani. O Lossy Counting se destaca por não depender de aleatoriedade.</p>
             </article>
             <article>
                 <h3>Conclusão Histórica</h3>
@@ -64,11 +63,11 @@
         </section>
         <!--Explicação teórica acerca da divisão dos buckets-->
         <section id="bucketAlgorithm">
-            <h2>Algoritmo de janelas (buckets)</h2>
+            <h2>Algoritmo de janelas <span class="italic">(buckets)</span></h2>
             <p>Para compreender o algoritmo lossy counting, primeiro é necessário compreender como a divisão das janelas</p>
             <article id="define">
                 <h3>Definição de janelas</h3>
-                <p>No Lossy Counting, o fluxo é dividido em intervalos chamados janelas ou buckets que determinam quando itens podem ser removidos da tabela de contagem (count table).</p>
+                <p>No Lossy Counting, o fluxo é dividido em intervalos chamados janelas, ou <span class="italic">buckets</span>, que determinam quando itens podem ser removidos da tabela de contagem (count table).</p>
                 <p>Tamanho do bucket é definido por:</p>
                 <p id="bucketFormula" class="formulaBlock">w = &lceil;1 / &epsilon;&rceil;</p>
                 <p>Cada bucket possui w elementos consecutivos do stream.<br>Portanto, se &epsilon; = 0.2, então a janela terá 5 itens consecutivos do stream</p>
@@ -88,7 +87,7 @@
                     <li>Cada bucket recebe um número sequencial (1, 2, 3, ...) chamado <strong>current bucket ID</strong></li>
                     <p class="formulaBlock">current bucket ID = [N / w]</p>
                     <li>Este número é usado para calcular o &delta;; de cada item;</li>
-                    <li>N pode ser comparado com o "índice" do elemnto atual;</li>
+                    <li>N pode ser comparado com o "índice" do elemento atual;</li>
                     <p class="formulaBlock">&delta; = current bucket ID - 1</p>
                     <li>O &delta; representa a incerteza máxima da contagem de um item;</li>
                     <li>Ao subtrair 1 do valor da janela atual, indicamos que o item não pôde aparecer nos buckets anteriores.</li>
@@ -125,7 +124,7 @@
                 <p>Por exemplo, caso o número 4 tenha aparecido no stream no bucket 1, mas sua contagem foi baixa, ele será removido. Quando ele reaparecer no bucket 5, seu valor de &delta; será 4. Assim, cobrindo a margem de erro, pois não é possível saber se o item 4 apareceu antes do bucket 5.</p>
                 <article id="removeCondition">
                     <h3>Condição de Remoção</h3>
-                    <p>Ainda que tenha sido falado anteriormente, é importante ressaltar a fórmula utilizada para determinar se um item será removido da tabela, pois consiste em em uma parte crucial do funcionamento do código.</p>
+                    <p>Ainda que tenha sido falado anteriormente, é importante ressaltar a fórmula utilizada para determinar se um item será removido da tabela, pois consiste em uma parte crucial do funcionamento do código.</p>
                     <p class="formulaBlock">count + &delta; &le; current bucket ID</p>
                     <p>Itens que satisfazem esta condição são removidos.</p>
                 </article>
@@ -150,7 +149,7 @@
         </section>
         <!--Aplicações reais do algoritmo Lossy Count-->
         <section id="aplicacoes">
-            <h2>Aplicações Práticas</h2>
+            <h2>Aplicações</h2>
             <p>As aplicações foram listadas no documento original de Manku e Motwani.</p>
             <article>
                 <h3>Monitoramento de Tráfego de Rede</h3>
@@ -287,12 +286,16 @@
                 </article>
             </article>
         </section>
+        <!--Comentário para delimitar visualmente onde começa o bloco da simulação-->
         <section id="simulation">
             <h2>Representação Visual</h2>
             <div id="infoStream">
                 <div id="countTable">
                     <h3>Tabela de contagem</h3>
-                    <p class="info">Bucket atual: <span>1</span></p>
+                    <div id="infoContainer">
+                        <p class="info">Bucket atual: <span>1</span></p>
+                        <p class="info">&delta; = <output name="delta"></output></p>
+                    </div>
                     <div id="contagem">
 
                     </div>
@@ -303,16 +306,17 @@
                 </div>
             </div>
             <div id="stream">
-                <div class="element"></div>
-                <div class="element"></div>
-                <div class="element"></div>
-                <div class="element"></div>
-                <div class="element"></div>
-                <div class="element"></div>
-                <div class="element"></div>
+                <div class="element"><p class="number"></p></div>
+                <div class="element"><p class="number"></p></div>
+                <div class="element"><p class="number"></p></div>
+                <div class="element"><p class="number"></p></div>
+                <div class="element"><p class="number"></p></div>
+                <div class="element"><p class="number"></p></div>
+                <div class="element"><p class="number"></p></div>
             </div>
             <p class="legenda">Tamanho do bucket = 7</p>
         </section>
+        <!--Comentário para delimitar visualmente onde acaba o bloco da simulação-->
             <section id="referenciasBibliograficas">
                 <h2>Referências Bibliográficas</h2>
                 <ul>
@@ -325,12 +329,13 @@
             </section>
     </main>
     <footer>
-        <p>Trabalho realizado durante a disciplina de Estrutura de Dados II, no curso de Engenharia de Computação da Universidade Estadual de Ponta Grossa.</p>
+        <p>Trabalho realizado na disciplina de Estrutura de Dados II, no curso de Engenharia de Computação da Universidade Estadual de Ponta Grossa.</p>
         <ul title="Autores">
             <li>Rafael Schultz Drzevieski</li>
             <li>Lucas Betim Nobre de Oliveira</li>
             <li>João Vitor Pereira Kramek</li>
         </ul>
     </footer>
+    <script src="../js/lossyCountVisualization.js"></script>
 </body>
 </html>

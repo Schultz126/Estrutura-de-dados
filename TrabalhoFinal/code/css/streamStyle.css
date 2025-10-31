@@ -18,7 +18,7 @@
 /* Div com display flex para segurar as caixas em que está a stream*/
 div#stream {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row-reverse wrap;
     justify-content: space-evenly;
 }
 
@@ -29,13 +29,22 @@ div.element {
     border: 1px solid rgba(0, 0, 0, 0.225);
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    margin: 10px;
+    margin: 10px 0px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
 }
 
 div#infoStream {
     display: flex;
     flex-flow: row nowrap;
     gap: 15px;
+}
+
+div#infoContainer {
+    border-bottom: 1px dashed var(--border-light);
 }
 
 @media (max-width: 768px) {
@@ -121,4 +130,43 @@ div#configuracoes button.turnedOff:hover {
 div#configuracoes button.turnedOff:active {
     transform: none; 
     background-color: var(--highlight-formula-bg); 
+}
+
+/* Classes para marcar transições na animação do Lossy Counting */
+.highlightBox {
+    flex: 0 1 100px;
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 10px 0px;
+    border: 1px solid var(--highlight-red);
+    transition: 0.2s;
+    transform: scale(0.9);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.highlightText {
+    color: var(--highlight-red);
+    transition: 0.2s;
+    font-size: 1.6rem;
+    font-weight: bolder;
+}
+
+.highlightSmallText {
+    color: var(--highlight-red);
+    transition: 0.2s;
+    font-weight: normal;
+    font-size: 0.8rem;
+    margin: 0px 7px 0px 0px;
+    display: inline;
+}
+
+.number {
+    display: inline;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: 0.2s;
 }
