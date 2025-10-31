@@ -13,6 +13,8 @@
     --border-light: #ced4da;         /* Borda tracejada (Explicação Delta/Epsilon) */
     --background-delta-exp: #f8f9fa; /* Fundo Explicação Delta/Epsilon */
     --subtitle-color: #343a408a;
+    --footer-bg: #343a40;            /* Fundo do Rodapé (Cinza Escuro) */
+    --footer-text: #f8f9fa;
 }
 
 /* Estilos Gerais */
@@ -27,11 +29,13 @@ body {
 
 /* Cabeçalho */
 header {
-    background-color: var(--primary-color);
+    background-color: var(--footer-bg);
     color: white;
     padding: 20px 0;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid var(--primary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 h1 {
@@ -147,8 +151,8 @@ li {
 /* Controle de dados (destaque da regra de remoção) */
 #bucketControl p:nth-of-type(2) { /* A regra de remoção: contagem + δ ≤ current bucket ID */
     font-weight: bold;
-    color: var(--highlight-green-text);
-    background-color: var(--highlight-green-bg);
+    color: var(--text-primary);
+    background-color: var(--highlight-formula-bg);
     border: 1px solid #c3e6cb;
     padding: 10px;
     border-radius: 4px;
@@ -195,4 +199,88 @@ p strong {
 .turnedOff {
     background-color: var(--highlight-formula-bg);
     color: var(--subtitle-color);
+}
+
+.italic {
+    font-style: italic;
+    font-weight: lighter;
+}
+
+/* Estilo para os links (a) */
+#referenciasBibliograficas {
+    border-top: 3px solid var(--primary-color);
+}
+
+#referenciasBibliograficas ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#referenciasBibliograficas li {
+    margin-bottom: 15px;
+    padding-left: 20px;
+    position: relative;
+}
+
+#referenciasBibliograficas li::before {
+    content: "■";
+    color: var(--secondary-color);
+    font-size: 0.8em;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#referenciasBibliograficas a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--secondary-color);
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+#referenciasBibliograficas a:hover {
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--primary-color);
+}
+
+/* 🦶 Estilos Específicos para o Rodapé (Footer) */
+footer {
+    background-color: var(--footer-bg); /* Fundo escuro */
+    color: var(--footer-text); /* Texto claro */
+    padding: 20px 0;
+    margin-top: 50px; /* Adiciona espaço acima do rodapé */
+    text-align: center;
+    font-size: 0.9em;
+}
+
+footer p {
+    max-width: 900px;
+    margin: 0 auto 15px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+footer ul {
+    list-style-type: none; /* Remove os marcadores de lista */
+    padding: 0;
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+footer ul[title="Autores"] {
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separador sutil */
+    padding-top: 10px;
+}
+
+footer li {
+    display: inline; /* Coloca os nomes lado a lado */
+    margin: 0 10px;
+    color: var(--secondary-color); /* Destaca os nomes dos autores */
+}
+
+footer ul::before {
+    content: "Autores: ";
+    font-weight: bold;
+    color: var(--footer-text);
+    margin-right: 5px;
 }

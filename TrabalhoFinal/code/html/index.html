@@ -5,7 +5,7 @@
     --------[Exemplos de código comentados]
     --------[Análise de complexidade]
     --------[Aplicações práticas]
-    - Comparação com estruturas similares
+    --------[Comparação com estruturas similares]
     --------[Referências bibliográficas]
 -->
 
@@ -207,12 +207,84 @@
             <p>O Lossy Counting não é o único algoritmo utilizado para processar streams. Outras aplicações com o mesmo intuito são amplamente utilizadas.</p>
             <article>
                 <h3>Space-Saving Algorithm</h3>
+                <p>O algoritmo Space-Saving foi proposto em 2005 por Ahmed Metwally, Divyakant Agrawal e Amr El Abbadi, como uma melhoria direta do Lossy Counting. Seu objetivo era o mesmo — encontrar itens frequentes em fluxos de dados —, mas de forma mais eficiente e simples, eliminando a necessidade de dividir o stream em janelas (buckets).</p>
+                <p>A ideia central é manter apenas um número fixo de contadores (&approx; 1/&delta;) e, quando chega um novo item sem espaço disponível, substituir o item menos frequente e ajustar sua contagem. Com isso, o Space-Saving atinge tempo constante O(1) por atualização, baixo uso de memória, e erro limitado e previsível, tornando-se um dos algoritmos mais usados em sistemas modernos de monitoramento em tempo real e Big Data analytics.</p>
+                <article class="explanationBox">
+                    <h4>Semelhanças</h4>
+                    <ul>
+                        <li>Mantém um conjunto limitado de contadores;</li>
+                        <li>Faz pruning de elementos pouco frequentes.</li>
+                    </ul>
+                </article>
+                <article class="explanationBox">
+                    <h4>Diferenças</h4>
+                    <ul>
+                        <li>Em vez de remover todos os itens com (count + &delta;) &le; bucket_id, o Space-Saving substitui diretamente o item menos frequente pelo novo item.</li>
+                        <li>O erro máximo é controlado pelo menor contador atual;</li>
+                        <li>Não precisa de buckets.</li>
+                    </ul>
+                </article>
+                <article class="explanationBox">
+                    <h4>Complexidade</h4>
+                    <ul>
+                        <li>Tempo: O(1);</li>
+                        <li>Espaço: O(1/&epsilon;) (igual ao Lossy Counting).</li>
+                    </ul>
+                </article>
             </article>
             <article>
                 <h3>Count-Min Sketch</h3>
+                <p>O Count-Min Sketch foi proposto em 2005 por Graham Cormode e S. Muthukrishnan como uma estrutura de dados probabilística e compacta para estimar frequências em fluxos de dados massivos. Inspirado por algoritmos como o Lossy Counting e Misra-Gries, ele utiliza múltiplas funções de hash e uma matriz de contadores, armazenando resumos (sketches) dos dados.
+                Ao consultar um item, o algoritmo retorna o menor valor entre os contadores associados, garantindo um erro máximo limitado por εN com alta probabilidade (1-&delta;).</p>
+                <p>Por sua eficiência (tempo O(log(1/&delta;)) e espaço O((1/&epsilon;)·log(1/&delta;))), o Count-Min Sketch tornou-se amplamente usado em Big Data, redes, bancos de dados e sistemas de recomendação, sendo hoje uma das estruturas mais importantes para contagem aproximada e análise de fluxos em larga escala.</p>
+                <article class="explanationBox">
+                    <h4>Semelhanças</h4>
+                    <ul>
+                        <li>Também estima frequências de itens com erro limitado por um parâmetro &epsilon;;</li>
+                        <li>Usa espaço sublinear (O((1/&epsilon;) log(1/&delta;))).</li>
+                    </ul>
+                </article>
+                <article class="explanationBox">
+                    <h4>Diferenças</h4>
+                    <ul>
+                        <li>É probabilístico, não determinístico;</li>
+                        <li>Usa múltiplas tabelas de hash e toma o mínimo dos contadores;</li>
+                        <li>O erro é garantido com alta probabilidade (1-&delta;), mas pode haver <span class="italic">overcounting</span>.</li>
+                    </ul>
+                </article>
+                <article class="explanationBox">
+                    <h4>Complexidade</h4>
+                    <ul>
+                        <li>Tempo: O(log(1/&delta;));</li>
+                        <li>Espaço: O((1/&epsilon;)·log(1/&delta;))</li>
+                    </ul>
+                </article>
             </article>
             <article>
                 <h3>Frequent Algorithm</h3>
+                <p>O algoritmo Frequent Items, também conhecido como Misra-Gries, foi proposto originalmente por Jayadev Misra e David Gries em 1982 no artigo <span class="italic">“Finding Repeated Elements”</span>. Ele foi um dos primeiros algoritmos determinísticos para identificar itens frequentes em uma sequência de dados com memória limitada.</p>
+                <p>A ideia é simples: manter até k contadores (onde k &approx; 1/&epsilon;) e, quando a tabela está cheia e surge um novo item, todos os contadores são decrementados, simulando o “esquecimento” de elementos menos frequentes. O método garante que nenhum item com frequência acima de &epsilon;N seja perdido, e serviu de base teórica para algoritmos posteriores, como o Lossy Counting e o Space-Saving.</p>
+                <article class="explanationBox">
+                    <h4>Semelhanças</h4>
+                    <ul>
+                        <li>Um dos algoritmos clássicos que inspiraram o Lossy Counting;</li>
+                        <li>Mantém até k contadores (onde k &approx; 1/&epsilon;).</li>
+                    </ul>
+                </article>
+                <article class="explanationBox">
+                    <h4>Diferenças</h4>
+                    <ul>
+                        <li>Não usa buckets ou pruning; quando um novo item chega e não há espaço, decrementa todos os contadores.</li>
+                        <li>Garante que nenhum item com frequência &lt; εN será retornado.</li>
+                    </ul>
+                </article>
+                <article class="explanationBox">
+                    <h4>Complexidade</h4>
+                    <ul>
+                        <li>Tempo: O(1)</li>
+                        <li>Espaço: O(1/&epsilon;)</li>
+                    </ul>
+                </article>
             </article>
         </section>
         <section id="simulation">
@@ -241,13 +313,24 @@
             </div>
             <p class="legenda">Tamanho do bucket = 7</p>
         </section>
-        <section id="referenciasBibliograficas">
-            <h2>Referências Bibliográficas</h2>
-            <ul>
-                <li><a href="https://cacm.acm.org/research/finding-the-frequent-items-in-streams-of-data" target="_blank">“Finding the Frequent Items in Streams of Data”, Communications of the ACM.</a></li>
-                <li><a href="https://www.vldb.org/conf/2002/S10P03.pdf" target="_blank">Manku, G. S.; Motwani, R. “Approximate Frequency Counts over Data Streams.” Proceedings of the 28th International Conference on Very Large Data Bases (VLDB'02), Hong Kong, 2002.</a></li>
-            </ul>
-        </section>
+            <section id="referenciasBibliograficas">
+                <h2>Referências Bibliográficas</h2>
+                <ul>
+                    <li><a href="https://cacm.acm.org/research/finding-the-frequent-items-in-streams-of-data" target="_blank">“Finding the Frequent Items in Streams of Data”, Communications of the ACM.</a></li>
+                    <li><a href="https://www.vldb.org/conf/2002/S10P03.pdf" target="_blank">Manku, G. S.; Motwani, R. “Approximate Frequency Counts over Data Streams.” Proceedings of the 28th International Conference on Very Large Data Bases (VLDB'02), Hong Kong, 2002.</a></li>
+                    <li><a href="https://dsf.berkeley.edu/cs286/papers/countmin-latin2004.pdf" target="_blank">Count-Min Sketch — Cormode, G.; Muthukrishnan, S. “An Improved Data Stream Summary: The Count-Min Sketch and its Applications.” 2005.</a></li>
+                    <li><a href="https://www.cs.ucsb.edu/sites/default/files/documents/2005-23.pdf" target="_blank">Space-Saving Algorithm — Metwally, A.; Agrawal, D.; El Abbadi, A. “Efficient Computation of Frequent and Top-k Elements in Data Streams.” 2005</a></li>
+                    <li><a href="https://www.semanticscholar.org/paper/Finding-Repeated-Elements-Misra-Gries/5285b2c3880c2fe5a93a9ed213a169facf6d6228" target="_blank">Misra-Gries Algorithm (Frequent Items) — Misra, J.; Gries, D. “Finding Repeated Elements.” Science of Computer Programming, Vol.2(2), 1982.</a></li>
+                </ul>
+            </section>
     </main>
+    <footer>
+        <p>Trabalho realizado durante a disciplina de Estrutura de Dados II, no curso de Engenharia de Computação da Universidade Estadual de Ponta Grossa.</p>
+        <ul title="Autores">
+            <li>Rafael Schultz Drzevieski</li>
+            <li>Lucas Betim Nobre de Oliveira</li>
+            <li>João Vitor Pereira Kramek</li>
+        </ul>
+    </footer>
 </body>
 </html>
