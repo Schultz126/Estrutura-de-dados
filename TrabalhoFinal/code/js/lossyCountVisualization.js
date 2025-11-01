@@ -80,7 +80,7 @@ document.querySelector('button#startButton').addEventListener('click', function(
                 if (i === numeros.length - 1) {
                     document.querySelector('button#pruneButton').classList.remove('turnedOff');
                 }
-            }, i * 1500); // Espera por 1 segundo
+            }, i * 1500); // Tempo de espera em milissegundos   
         }
     } else {
         alert('Stream cheio. Realize o prune');
@@ -111,6 +111,7 @@ document.querySelector('button#pruneButton').addEventListener('click', function(
     if(this.classList.contains('turnedOff')) { // Não permite que o botão seja precionado caso ele esteja desativado
         return;
     }
+    addItemToPopUp();
     currentBucket++; // Incrementa o currentBucket 
     document.querySelector('span#bucketCount').textContent = currentBucket;
 
@@ -119,7 +120,7 @@ document.querySelector('button#pruneButton').addEventListener('click', function(
     // Então, nós mantemos tudo o que for: (element.count + element.delta > currentBucket)
     
     countTable = countTable.filter(element => {
-        return (element.count + element.delta) > currentBucket;
+        return (element.count + element.delta) >= currentBucket;
     });
 
     updateVisualCountTable(); // Atualiza a tabela visual para refletir a remoção
@@ -133,11 +134,12 @@ document.querySelector('button#pruneButton').addEventListener('click', function(
         caixas[i].classList.remove('highlightBox');
         caixas[i].classList.add('element');
     }   
+    // Verifica se o relatório foi solicitado
     if(document.querySelector('input#relatorio').checked) {
         document.querySelector('div#modal').classList.remove('hidden');
         document.querySelector('div#modal').classList.add('display');
         document.body.classList.add('grayBackground');
-        document.html.classList.add('grayBackground');
+        this.classList.add('turnedOff');
     }
     this.classList.add('turnedOff');
 });
@@ -189,3 +191,33 @@ document.querySelector('button#closeModal').addEventListener('click', function()
     document.querySelector('div#modal').classList.add('hidden');
     document.body.classList.remove('grayBackground');
 });
+
+function addItemToPopUp() {
+    let condition;
+    let modalBody = document.querySelector('div.modal-body');
+
+    let child = modalBody.lastChild; // Começa pelo último elemento
+    while (child) {
+        let nextSibling = child.previousSibling; // Salva a referência ao próximo
+        
+        // Checa se o nome do nó não é 'BUTTON'
+        if (child.nodeName !== 'BUTTON') {
+            modalBody.removeChild(child);
+        }
+        child = nextSibling; // Move para o próximo elemento
+    }
+    countTable.forEach(item => {
+        condition = item.count + item.delta;
+        if(condition > currentBucket) {
+            let text = document.createElement('p');
+            text.textContent = `(${item.number}, ${item.count}, ${item.delta}) => ${condition} (count + delta) > ${currentBucket} (current bucket) MANTIDO`
+            text.classList.add('kept');
+            modalBody.appendChild(text);
+        } else {
+            let text = document.createElement('p');
+            text.textContent = `(${item.number}, ${item.count}, ${item.delta}) => ${condition} (count + delta) ≤ ${currentBucket} (current bucket ID) REMOVIDO`
+            text.classList.add('cut');
+            modalBody.appendChild(text);
+        }
+    })
+}

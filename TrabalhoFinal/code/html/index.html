@@ -34,9 +34,12 @@
     <main>
         <div class="hidden" id="modal">
             <div class="modal-header">
-                
+                <p>Itens que satisfazem a seguinte fórmula são removidos:<br>count + &delta; &le; current_bucket_ID</p>
             </div>
             <div class="modal-body">
+                <div id="modalItems">
+
+                </div>
                 <button id="closeModal">Fechar</button>
             </div>
         </div>
@@ -321,7 +324,6 @@
             <div id="stream"></div>
             <p class="legenda" id="tamanhoDoBucket"></p>
             <p class="legenda">As informações aparecem na seguinte disposição: <strong>(número, count, &delta;)</strong></p>
-            <p class="legenda">Para remoção: count + &delta; &le; current_bucket_ID</p>
         </section>
         <!--Comentário para delimitar visualmente onde acaba o bloco da simulação-->
             <section id="referenciasBibliograficas">

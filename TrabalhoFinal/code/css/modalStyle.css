@@ -16,9 +16,6 @@
     --overlay-color: #0000004e;      /* Cor do overlay */
 }
 
-/* ---------------------------------- */
-/* 📦 Estilos do Modal e Overlay     */
-/* ---------------------------------- */
 /*
  * 1. O OVERLAY (O FUNDO ESCURO)
 */
@@ -49,15 +46,12 @@ div#modal {
     max-height: 90vh;
     
     /* Estilo Visual */
-    background-color: var(--background-paper); /* Variável de :root */
+    background-color: var(--background-paper); 
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     
     /* Layout Interno */
-    /* *** NÃO COLOQUE 'display: flex' AQUI *** */
     flex-direction: column; /* Isso só se aplica quando o display for flex */
-
-    /* Fica NA FRENTE do overlay */
     z-index: 1001; 
 }
 
@@ -112,4 +106,12 @@ div.display {
 
 #closeModal:hover {
     background-color: var(--secondary-color)
+}
+
+.kept {
+    color: var(--highlight-green-text);
+}
+
+.cut {
+    color: var(--highlight-red);
 }
