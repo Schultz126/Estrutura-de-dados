@@ -64,7 +64,7 @@
         <!--Explicação teórica acerca da divisão dos buckets-->
         <section id="bucketAlgorithm">
             <h2>Algoritmo de janelas <span class="italic">(buckets)</span></h2>
-            <p>Para compreender o algoritmo lossy counting, primeiro é necessário compreender como a divisão das janelas</p>
+            <p>Para compreender o algoritmo lossy counting, primeiro é necessário compreender como a divisão das janelas ocorre</p>
             <article id="define">
                 <h3>Definição de janelas</h3>
                 <p>No Lossy Counting, o fluxo é dividido em intervalos chamados janelas, ou <span class="italic">buckets</span>, que determinam quando itens podem ser removidos da tabela de contagem (count table).</p>
@@ -115,7 +115,7 @@
             <article id="datastream">
                 <h3>Ideia central</h3>
                 <p>No contexto de fluxo de dados, as informações não são armazenadas em memória, por virem de diversas fontes e em alta velocidade, o que faz necessário que estes dados sejam processados em tempo real. O algoritmo de lossy counting surge como opção para quantificar itens mais frequentes dentro deste fluxo.</p>
-                <p>Como o peso computacional para armazenar toda a informação da datastream seria muito elevado, este algoritmo descarta itens pouco frequentes enquanto "carrega" elementos para o bucket seguinte. Vale ressaltar que os buckets não são uma forma de armazenamento, mas sim um delimitador de tempo.</p>
+                <p>Como o peso computacional para armazenar toda a informação da data stream seria muito elevado, este algoritmo descarta itens pouco frequentes enquanto "carrega" elementos para o bucket seguinte. Vale ressaltar que os buckets não são uma forma de armazenamento, mas sim um delimitador de tempo.</p>
             </article>
             <!--Explicação da fase de pruning-->
             <article id="pruningExplanation">
@@ -293,12 +293,9 @@
                 <div id="countTable">
                     <h3>Tabela de contagem</h3>
                     <div id="infoContainer">
-                        <p class="info">Bucket atual: <span>1</span></p>
-                        <p class="info">Para remoção: count + &delta; &le; current_bucket_ID</p>
+                        <p class="info">Bucket atual: <span id="bucketCount">1</span></p>
                     </div>
-                    <div id="contagem">
-                        
-                    </div>
+                    <div id="contagem"></div>
                 </div>
                 <div id="configuracoes">
                     <button id="startButton">Iniciar</button>
@@ -313,9 +310,11 @@
                 <div class="element"><p class="number"></p></div>
                 <div class="element"><p class="number"></p></div>
                 <div class="element"><p class="number"></p></div>
+                <div class="element"><p class="number"></p></div>
             </div>
             <p class="legenda">Tamanho do bucket = 7</p>
             <p class="legenda">As informações aparecem na seguinte disposição: <strong>(número, count, &delta;)</strong></p>
+            <p class="legenda">Para remoção: count + &delta; &le; current_bucket_ID</p>
         </section>
         <!--Comentário para delimitar visualmente onde acaba o bloco da simulação-->
             <section id="referenciasBibliograficas">

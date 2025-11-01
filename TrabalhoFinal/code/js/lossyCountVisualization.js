@@ -39,7 +39,6 @@ document.querySelector('button#startButton').addEventListener('click', function(
     if (N < 7) {
         for (let i = 0; i < numeros.length && i <= 7; i++) {
             setTimeout(() => { // Função setTimeOut() proporciona delays
-                
                 let numGerado = Math.floor((Math.random() * 7) + 1);
                 numeros[i].textContent = numGerado; // Gerador de 1 a 7
 
@@ -50,13 +49,13 @@ document.querySelector('button#startButton').addEventListener('click', function(
                     // Crie um novo e adicione ao array
                     let delta = (currentBucket - 1);
                     let newElement = new infoNumber(numGerado, 1, delta);
-                    countTable.push(newElement);
-                    updateVisualCountTable()
-                } else {
+                    countTable.push(newElement); 
+                    updateVisualCountTable(numGerado); 
+               } else {
                     // Item FOI ENCONTRADO
                     // Use o 'index' para incrementar o contador
-                    countTable[index].addCount();
-                    updateVisualCountTable()
+                    countTable[index].addCount();  
+                    updateVisualCountTable(numGerado);
                 }
                 
                 N++; // Incrementa N em ambos os casos
@@ -73,7 +72,7 @@ document.querySelector('button#startButton').addEventListener('click', function(
                 if (i === 7 || i === numeros.length - 1) {
                     document.querySelector('button#pruneButton').classList.remove('turnedOff');
                 }
-            }, i * 1000); // Espera por 1 segundo
+            }, i * 1500); // Espera por 1 segundo
         }
     } else {
         alert('Stream cheio. Realize o prune');
@@ -81,16 +80,22 @@ document.querySelector('button#startButton').addEventListener('click', function(
 })
 
 // Função auxiliar para a criação de um novo elemento
-function updateVisualCountTable() {
-    // 1. Limpa o contêiner
-    tabelaDeContagem.innerHTML = ''; 
-    
-    // 2. Redesenha tudo a partir da fonte de dados (countTable)
-    countTable.forEach(element => {
-        let newParagraph = document.createElement("p");
-        newParagraph.textContent = `(${element.number}, ${element.count}, ${element.delta})`;
-        newParagraph.classList.add('auxClass'); // Você pode manter sua classe
-        tabelaDeContagem.appendChild(newParagraph);
+function updateVisualCountTable(highlightNumber = null) {
+     // 1. Limpa o contêiner
+     tabelaDeContagem.innerHTML = '';
+
+     // 2. Redesenha tudo a partir da fonte de dados (countTable)
+     countTable.forEach(element => {
+         let newParagraph = document.createElement("p");
+         newParagraph.textContent = `(${element.number}, ${element.count}, ${element.delta})`;
+         newParagraph.classList.add('auxClass'); // Você pode manter sua classe
+
+        // Adiciona a classe de destaque se o número corresponder
+        if (highlightNumber !== null && element.number === highlightNumber) {
+            newParagraph.classList.add('highlightSmallText');
+        }
+
+         tabelaDeContagem.appendChild(newParagraph);
     });
 }
 
@@ -98,8 +103,8 @@ document.querySelector('button#pruneButton').addEventListener('click', function(
     if(this.classList.contains('turnedOff')) { // Não permite que o botão seja precionado caso ele esteja desativado
         return;
     }
-
     currentBucket++; // Incrementa o currentBucket 
+    document.querySelector('span#bucketCount').textContent = currentBucket;
 
     // Filtra a countTable
     // A fórmula para remoção é: (element.count + element.delta <= currentBucket)

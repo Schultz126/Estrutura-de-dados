@@ -142,6 +142,7 @@ div#contagem {
 div#contagem p {
     flex: none;
     margin-left: 10px;
+    transition: 0.2s;
 }
 
 /* Classes para marcar transições na animação do Lossy Counting */
@@ -171,9 +172,12 @@ div#contagem p {
     color: var(--highlight-red);
     transition: 0.2s;
     font-weight: normal;
-    font-size: 0.8rem;
-    margin: 0px 7px 0px 0px;
+    transform: scale(1.05);
+    transition: 0.2s;
     display: inline;
+
+    flex: none;
+    margin-left: 10px;
 }
 
 .number {
