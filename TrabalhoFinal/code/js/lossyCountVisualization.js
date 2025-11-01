@@ -4,7 +4,7 @@
         - δ = current bucket ID - 1;
         - w = ⌈1 / ε⌉;
         - Para remoção: count + δ ≤ current bucket ID
-*/ 
+*/
 
 class infoNumber { // Classe para a tabela de contagem
     constructor(number, count, delta) {
@@ -51,10 +51,12 @@ document.querySelector('button#startButton').addEventListener('click', function(
                     let delta = (currentBucket - 1);
                     let newElement = new infoNumber(numGerado, 1, delta);
                     countTable.push(newElement);
+                    updateVisualCountTable()
                 } else {
                     // Item FOI ENCONTRADO
                     // Use o 'index' para incrementar o contador
                     countTable[index].addCount();
+                    updateVisualCountTable()
                 }
                 
                 N++; // Incrementa N em ambos os casos
@@ -77,3 +79,48 @@ document.querySelector('button#startButton').addEventListener('click', function(
         alert('Stream cheio. Realize o prune');
     }
 })
+
+// Função auxiliar para a criação de um novo elemento
+function updateVisualCountTable() {
+    // 1. Limpa o contêiner
+    tabelaDeContagem.innerHTML = ''; 
+    
+    // 2. Redesenha tudo a partir da fonte de dados (countTable)
+    countTable.forEach(element => {
+        let newParagraph = document.createElement("p");
+        newParagraph.textContent = `(${element.number}, ${element.count}, ${element.delta})`;
+        newParagraph.classList.add('auxClass'); // Você pode manter sua classe
+        tabelaDeContagem.appendChild(newParagraph);
+    });
+}
+
+document.querySelector('button#pruneButton').addEventListener('click', function() {
+    if(this.classList.contains('turnedOff')) { // Não permite que o botão seja precionado caso ele esteja desativado
+        return;
+    }
+
+    currentBucket++; // Incrementa o currentBucket 
+
+    // Filtra a countTable
+    // A fórmula para remoção é: (element.count + element.delta <= currentBucket)
+    // Então, nós mantemos tudo o que for: (element.count + element.delta > currentBucket)
+    
+    countTable = countTable.filter(element => {
+        return (element.count + element.delta) > currentBucket;
+    });
+
+    updateVisualCountTable(); // Atualiza a tabela visual para refletir a remoção
+    
+    N = 0; // Reseta N para que o startButton possa preencher o stream novamente
+
+    // Limpa as caixas do stream visual
+    for (let i = 0; i < numeros.length; i++) {
+        numeros[i].textContent = '';
+        numeros[i].classList.remove('highlightText');
+        caixas[i].classList.remove('highlightBox');
+        caixas[i].classList.add('element');
+    }
+    
+    // Opcional: Esconde o botão de prune até o stream encher de novo
+    this.classList.add('turnedOff');
+});

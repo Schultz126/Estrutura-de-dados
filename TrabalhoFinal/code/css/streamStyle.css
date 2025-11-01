@@ -136,12 +136,12 @@ div#configuracoes button.turnedOff:active {
 div#contagem {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
 
 div#contagem p {
     flex: none;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 /* Classes para marcar transições na animação do Lossy Counting */
