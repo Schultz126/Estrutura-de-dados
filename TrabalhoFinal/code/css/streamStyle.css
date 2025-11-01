@@ -76,6 +76,7 @@ div#configuracoes {
     display: flex;
     flex-direction: column; /* Empilha os botões verticalmente */
     gap: 10px; /* Adiciona um espaço de 10px entre os botões */
+    justify-content: center;
 }
 
 div#configuracoes button {
@@ -130,6 +131,17 @@ div#configuracoes button.turnedOff:hover {
 div#configuracoes button.turnedOff:active {
     transform: none; 
     background-color: var(--highlight-formula-bg); 
+}
+
+div#contagem {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+div#contagem p {
+    flex: none;
+    margin-left: 5px;
 }
 
 /* Classes para marcar transições na animação do Lossy Counting */
