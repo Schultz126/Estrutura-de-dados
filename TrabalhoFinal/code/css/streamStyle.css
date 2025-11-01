@@ -114,7 +114,7 @@ div#countTable h3 {
     margin-bottom: 0px;
 }
 
-div#configuracoes button.turnedOff {
+div#configuracoes button.turnedOff, input.turnedOff {
     background-color: var(--highlight-formula-bg); 
     color: var(--subtitle-color); 
     
@@ -123,12 +123,12 @@ div#configuracoes button.turnedOff {
     box-shadow: none;
 }
 
-div#configuracoes button.turnedOff:hover {
+div#configuracoes button.turnedOff:hover, input.turnedOff:hover {
     background-color: var(--highlight-formula-bg); 
     box-shadow: none; 
 }
 
-div#configuracoes button.turnedOff:active {
+div#configuracoes button.turnedOff:active, input.turnedOff:active {
     transform: none; 
     background-color: var(--highlight-formula-bg); 
 }

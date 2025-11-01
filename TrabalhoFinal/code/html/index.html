@@ -24,6 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/mainStyle.css">
     <link rel="stylesheet" href="../css/streamStyle.css">
+    <link rel="stylesheet" href="../css/modalStyle.css">
     <title>Lossy Counting</title>
 </head>
 <body>
@@ -31,6 +32,14 @@
         <h1>Lossy Counting</h1>
     </header>
     <main>
+        <div class="hidden" id="modal">
+            <div class="modal-header">
+                
+            </div>
+            <div class="modal-body">
+                <button id="closeModal">Fechar</button>
+            </div>
+        </div>
         <!--Pequena introdução acerca do lossy couting-->
         <section id="intro">
             <h2>O que é o algoritmo Lossy Counting?</h2>
@@ -300,6 +309,9 @@
                 <div id="configuracoes">
                     <button id="startButton" class="turnedOff">Iniciar</button>
                     <button id="pruneButton" class="turnedOff">Prune</button>
+                    <div id="relatorioCheckbox">
+                        <input type="checkbox" name="relatorio" id="relatorio"><label for="relatorio">Mostrar relatório de pruning</label>
+                    </div>
                     <form>
                         <input type="number" placeholder="Valor de &epsilon;" required id="epsilonInput" step="0.01" max="0.25" min="0.01">
                         <input type="submit" value="Criar Buckets" id="generateBoxes">

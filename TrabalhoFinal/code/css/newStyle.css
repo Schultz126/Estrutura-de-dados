@@ -1,0 +1,552 @@
+/* Variáveis de Cores */
+:root {
+    --primary-color: #0056b3;        /* Azul Escuro (Cabeçalho, Títulos H2) */
+    --secondary-color: #007bff;      /* Azul Mais Claro (Títulos H3, Listas de garantia, Borda H4) */
+    --background-light: #f4f4f9;     /* Fundo Principal Claro */
+    --background-paper: white;       /* Fundo de Seções/Artigos */
+    --text-primary: #333;            /* Texto Principal */
+    --text-secondary: #343a40;       /* Títulos H4, Fórmulas */
+    --highlight-red: #dc3545;        /* Destaque (strong/Variáveis) */
+    --highlight-green-bg: #d4edda;   /* Fundo da Regra de Remoção (Verde Claro) */
+    --highlight-green-text: #28a745; /* Texto da Regra de Remoção (Verde Escuro) */
+    --highlight-formula-bg: #e9ecef; /* Fundo das Fórmulas */
+    --border-light: #ced4da;         /* Borda tracejada (Explicação Delta/Epsilon) */
+    --background-delta-exp: #f8f9fa; /* Fundo Explicação Delta/Epsilon */
+    --subtitle-color: #343a408a;
+    --footer-bg: #343a40;            /* Fundo do Rodapé (Cinza Escuro) */
+    --footer-text: #f8f9fa;
+}
+
+/* Estilos Gerais */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-light);
+    color: var(--text-primary);
+    min-width: 320px;
+}
+
+/* Cabeçalho */
+header {
+    background-color: var(--footer-bg);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid var(--primary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+/* Conteúdo Principal */
+main {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Seções e Artigos */
+section, article {
+    background-color: var(--background-paper);
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+article {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-top: 0;
+    font-size: 1.8em;
+}
+
+h3 {
+    color: var(--secondary-color);
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+h4 {
+    color: var(--text-secondary);
+    border-left: 4px solid var(--secondary-color);
+    padding-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+p {
+    margin: 10px 0;
+    text-align: justify;
+}
+
+/* Lista */
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* Fórmulas e Destaques */
+.formulaBlock {
+    font-weight: bold;
+    font-style: normal;
+    background-color: var(--highlight-formula-bg);
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: var(--text-secondary);
+}
+
+#imgCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#imgCenter img {
+    flex: none;
+    width: 499px;
+    height: 300px;
+    margin: auto;
+}
+
+/* Explicação do Delta (div existente) */
+.explanationBox {
+    border: 1px dashed var(--border-light);
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+    background-color: var(--background-delta-exp);
+}
+
+/* Destaque de palavras-chave na explicação do Epsilon */
+#epsilonExplanation p strong {
+    color: var(--primary-color);
+}
+
+/* Controle de dados (destaque da regra de remoção) */
+#bucketControl p:nth-of-type(2) {
+    font-weight: bold;
+    color: var(--text-primary);
+    background-color: var(--highlight-formula-bg);
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+#codigoComentado iframe {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 550px;
+}
+
+/* Destaque dos pontos garantidos */
+#bucketControl ul {
+    list-style-type: square;
+    color: var(--secondary-color);
+}
+
+/* Destaque para termos importantes no texto (current bucket ID) */
+p strong {
+    color: var(--highlight-red);
+    font-weight: 700;
+}
+
+.legenda {
+    color: var(--subtitle-color);
+    font-size: 0.7rem;
+    margin: 0px;
+}
+
+.formula {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-weight: bolder;
+}
+
+.info {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin: 0px 7px 0px 0px;
+    display: inline;
+}
+
+.italic {
+    font-style: italic;
+    font-weight: normal;
+}
+
+
+/* 📊 Estilos da Simulação (Regras do Bloco 1) */
+
+/* Div com display flex para segurar as caixas em que está a stream*/
+div#stream {
+    display: flex;
+    flex-flow: row-reverse wrap;
+    justify-content: space-evenly;
+    /* Estilos do Bloco 2 que faltavam */
+    background-color: var(--background-delta-exp);
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+    border: 1px solid var(--border-light);
+    min-height: 90px;
+    box-sizing: border-box;
+}
+
+/* Estilo das caixas individuais */
+div.element {
+    flex: 0 1 100px;
+    height: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.225);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin: 10px 0px;
+    background-color: var(--background-paper); /* Adicionado para consistência */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+
+div#infoStream {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 15px;
+}
+
+div#infoContainer {
+    border-bottom: 1px dashed var(--border-light);
+}
+
+div#countTable, div#configuracoes {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.225);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+div#countTable {
+    flex: 2;
+}
+
+div#configuracoes {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+div#configuracoes button {
+    background-color: var(--primary-color);
+    color: var(--background-paper);
+    border: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+div#configuracoes button:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+div#configuracoes button:active {
+    transform: scale(0.98);
+    background-color: var(--primary-color);
+}
+
+div#countTable h3 {
+    color: var(--text-primary);
+    margin-bottom: 0px;
+}
+
+/* Estilos .turnedOff focados nos botões e inputs da simulação */
+div#configuracoes button.turnedOff, 
+input.turnedOff {
+    background-color: var(--highlight-formula-bg); 
+    color: var(--subtitle-color); 
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+div#configuracoes button.turnedOff:hover, 
+input.turnedOff:hover {
+    background-color: var(--highlight-formula-bg); 
+    box-shadow: none; 
+}
+
+div#configuracoes button.turnedOff:active, 
+input.turnedOff:active {
+    transform: none; 
+    background-color: var(--highlight-formula-bg); 
+}
+
+div#contagem {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100px; /* Garante altura mínima */
+}
+
+div#contagem p {
+    flex: 0 0 70px;
+    margin-left: 10px;
+    transition: 0.2s;
+    text-align: left; /* Alinhamento para os itens da contagem */
+}
+
+#configuracoes form {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#configuracoes input[type="number"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+#configuracoes input[type="submit"] {
+    flex-basis: 120px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+#configuracoes input[type="submit"]:hover {
+    background-color: var(--primary-color);
+}
+
+/* Classes para marcar transições na animação do Lossy Counting */
+.highlightBox {
+    flex: 0 1 100px;
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 10px 0px;
+    border: 1px solid var(--highlight-red);
+    transition: 0.2s;
+    transform: scale(0.9);
+    background-color: var(--background-paper); /* Adicionado */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.highlightText {
+    color: var(--highlight-red);
+    transition: 0.2s;
+    font-size: 1.6rem;
+    font-weight: bolder;
+}
+
+.highlightSmallText {
+    color: var(--highlight-red);
+    transition: 0.2s;
+    font-weight: normal;
+    transform: scale(1.05);
+    display: inline;
+    flex: none;
+    margin-left: 10px;
+}
+
+.number {
+    display: inline;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: 0.2s;
+    text-align: center; /* Adicionado */
+}
+
+
+/* 📚 Estilos para Referências Bibliográficas */
+#referenciasBibliograficas {
+    border-top: 3px solid var(--primary-color);
+}
+
+#referenciasBibliograficas ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#referenciasBibliograficas li {
+    margin-bottom: 15px;
+    padding-left: 20px;
+    position: relative;
+}
+
+#referenciasBibliograficas li::before {
+    content: "■";
+    color: var(--secondary-color);
+    font-size: 0.8em;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#referenciasBibliograficas a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--secondary-color);
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+#referenciasBibliograficas a:hover {
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--primary-color);
+}
+
+/* 🦶 Estilos do Rodapé */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 20px 0;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+footer p {
+    max-width: 900px;
+    margin: 0 auto 15px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+footer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+footer ul[title="Autores"] {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+}
+
+footer li {
+    display: inline;
+    margin: 0 10px;
+    color: var(--secondary-color);
+}
+
+footer ul::before {
+    content: "Autores: ";
+    font-weight: bold;
+    color: var(--footer-text);
+    margin-right: 5px;
+}
+
+
+/* 📱 Media Queries (Responsividade) */
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 2.2em; /* Reduz o título principal */
+    }
+
+    h2 {
+        font-size: 1.6em; /* Reduz os títulos de seção */
+    }
+
+    h3 {
+        font-size: 1.3em;
+    }
+    
+    p {
+        text-align: left; /* Melhora a legibilidade em telas estreitas */
+    }
+
+    main {
+        margin-top: 0px;
+        padding: 0px; /* Reduz o preenchimento lateral */
+    }
+
+    section, article {
+        padding: 12px; /* Reduz o preenchimento interno */
+        margin-bottom: 0px;
+        border-radius: 0; /* Remove bordas em telas pequenas */
+    }
+
+    article {
+        box-shadow: none; /* Remove sombra interna */
+    }
+    
+    #imgCenter img {
+        width: 349px;
+        height: 210px;
+    }
+    
+    .explanationBox {
+        padding: 10px;
+    }
+    
+    #bucketControl p:nth-of-type(2) {
+        line-height: 1.4;
+    }
+
+    /* Regra de responsividade da simulação (do Bloco 1) */
+    div#infoStream {
+        flex-flow: column; /* Muda a direção para vertical */
+    }
+
+    /* Rodapé */
+    footer {
+        margin-top: 0;
+    }
+
+    footer p {
+        padding: 0 15px;
+    }
+
+    footer ul::before {
+        display: block; /* Coloca "Autores:" em sua própria linha */
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    footer li {
+        display: block;  /* Empilha os nomes dos autores */
+        margin: 8px 0;   /* Adiciona espaço vertical entre os nomes */
+        color: var(--footer-text); /* Muda a cor para combinar com o resto */
+    }
+}

@@ -18,6 +18,7 @@ class infoNumber { // Classe para a tabela de contagem
     }
 };
 
+//Função de busca sequencial para encontrar os números dentro do vetor
 function linearCountTableSearch(number, array = []) {
     const numToFind = Number.parseInt(number); 
     for (let i = 0; i < array.length; i++) {
@@ -35,16 +36,18 @@ let numeros; // Vetor com os <p> em que os elementos serão armazenados
 let N = 0; // Variável global para controlar quantos quadrados foram preenchidos com números
 let tabelaDeContagem = document.querySelector('div#contagem'); // container da contagem 
 let buckets = 0; // Quantidade de buckets
+let pop_up = document.querySelector('button#closeModal'); // Modal com o relatório do pruning
 
 // Listener do botão de iniciar stream
 document.querySelector('button#startButton').addEventListener('click', function() {
     if(this.classList.contains('turnedOff')) {
         return;
     }
+    let delimitadorRandomico = Number.parseInt(buckets * 0.9);
     if (N < buckets) {
         for (let i = 0; i < numeros.length; i++) {
             setTimeout(() => { // Função setTimeOut() proporciona delays
-                let numGerado = Math.floor((Math.random() * 10) + 1);
+                let numGerado = Math.floor((Math.random() * delimitadorRandomico) + 1);
                 numeros[i].textContent = numGerado; // Gerador de 1 a 7
 
                 let index = linearCountTableSearch(numGerado, countTable);
@@ -130,29 +133,40 @@ document.querySelector('button#pruneButton').addEventListener('click', function(
         caixas[i].classList.remove('highlightBox');
         caixas[i].classList.add('element');
     }   
+    if(document.querySelector('input#relatorio').checked) {
+        document.querySelector('div#modal').classList.remove('hidden');
+        document.querySelector('div#modal').classList.add('display');
+        document.body.classList.add('grayBackground');
+        document.html.classList.add('grayBackground');
+    }
     this.classList.add('turnedOff');
 });
 
 document.querySelector('input#generateBoxes').addEventListener('click', function(event) {
     event.preventDefault(); // Previne que o botão input resete a página
 
+    if(this.classList.contains('turnedOff')) {
+        return;
+    }
     let epsilon = Number.parseFloat(document.querySelector('input#epsilonInput').value);
     buckets = Math.ceil(1 / epsilon);
-    document.querySelector('p#tamanhoDoBucket').textContent = `Tamanho do bucket = ${buckets}`
 
     if (!buckets || buckets <= 0 || buckets === Infinity) { // Validação de erros, caso epsilon for 0, NaN ou inválido
         alert("Por favor, insira um valor válido para ε (ex: 0.1, 0.25)");
         buckets = 0; // Reseta os buckets
         return;
     }
-    document.querySelector('button#startButton').classList.remove('turnedOff');
-     for (let i = 0; i < buckets; i++) {
-         generateBoxOnStream();
-     }
+    document.querySelector('p#tamanhoDoBucket').textContent = `Tamanho do bucket = ${buckets}`
+    document.querySelector('button#startButton').classList.remove('turnedOff'); // Habilita o botão para iniciar a stream somente depois de validar o valor de epsilon
+    for (let i = 0; i < buckets; i++) {
+        generateBoxOnStream();
+    }
     
     // Atualiza as variáveis globais DEPOIS de criar as caixas
      caixas = document.querySelectorAll('#stream .element');
      numeros = document.getElementsByClassName('number');
+
+     this.classList.add('turnedOff');
 });
 
 // Função auxiliar para o listener gerador das caixa
@@ -168,3 +182,10 @@ function generateBoxOnStream() {
     newBox.appendChild(paragraphInsideNewElement);
     document.querySelector('div#stream').appendChild(newBox);
 }   
+
+// Botão de fechar do modal com o relatório do prune
+document.querySelector('button#closeModal').addEventListener('click', function() {
+    document.querySelector('div#modal').classList.remove('display');
+    document.querySelector('div#modal').classList.add('hidden');
+    document.body.classList.remove('grayBackground');
+});
