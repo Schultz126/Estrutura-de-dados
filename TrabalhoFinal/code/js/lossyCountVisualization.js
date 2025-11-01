@@ -30,16 +30,21 @@ function linearCountTableSearch(number, array = []) {
 
 let countTable = []; // Vetor para armazenar as instâncias da classe infoNumber
 let currentBucket = 1; // current_bucket_ID. Incrementado no pruning
-let caixas = document.querySelectorAll('#stream .element'); // Vetor com as caixas em que os elementos estão "armazenados". Será usado para mudar a cor da borda, indicando que o elemento foi selecionado
-let numeros = document.getElementsByClassName('number'); // Vetor com os <p> em que os elementos serão armazenados
+let caixas; // Vetor com as caixas em que os elementos estão "armazenados". Será usado para mudar a cor da borda, indicando que o elemento foi selecionado
+let numeros; // Vetor com os <p> em que os elementos serão armazenados
 let N = 0; // Variável global para controlar quantos quadrados foram preenchidos com números
-let tabelaDeContagem = document.querySelector('div#contagem'); // container da contagem
+let tabelaDeContagem = document.querySelector('div#contagem'); // container da contagem 
+let buckets = 0; // Quantidade de buckets
 
+// Listener do botão de iniciar stream
 document.querySelector('button#startButton').addEventListener('click', function() {
-    if (N < 7) {
-        for (let i = 0; i < numeros.length && i <= 7; i++) {
+    if(this.classList.contains('turnedOff')) {
+        return;
+    }
+    if (N < buckets) {
+        for (let i = 0; i < numeros.length; i++) {
             setTimeout(() => { // Função setTimeOut() proporciona delays
-                let numGerado = Math.floor((Math.random() * 7) + 1);
+                let numGerado = Math.floor((Math.random() * 10) + 1);
                 numeros[i].textContent = numGerado; // Gerador de 1 a 7
 
                 let index = linearCountTableSearch(numGerado, countTable);
@@ -69,7 +74,7 @@ document.querySelector('button#startButton').addEventListener('click', function(
                     caixas[i - 1].classList.remove('highlightBox');
                     caixas[i - 1].classList.add('element');
                 }
-                if (i === 7 || i === numeros.length - 1) {
+                if (i === numeros.length - 1) {
                     document.querySelector('button#pruneButton').classList.remove('turnedOff');
                 }
             }, i * 1500); // Espera por 1 segundo
@@ -124,8 +129,42 @@ document.querySelector('button#pruneButton').addEventListener('click', function(
         numeros[i].classList.remove('highlightText');
         caixas[i].classList.remove('highlightBox');
         caixas[i].classList.add('element');
-    }
-    
-    // Opcional: Esconde o botão de prune até o stream encher de novo
+    }   
     this.classList.add('turnedOff');
 });
+
+document.querySelector('input#generateBoxes').addEventListener('click', function(event) {
+    event.preventDefault(); // Previne que o botão input resete a página
+
+    let epsilon = Number.parseFloat(document.querySelector('input#epsilonInput').value);
+    buckets = Math.ceil(1 / epsilon);
+    document.querySelector('p#tamanhoDoBucket').textContent = `Tamanho do bucket = ${buckets}`
+
+    if (!buckets || buckets <= 0 || buckets === Infinity) { // Validação de erros, caso epsilon for 0, NaN ou inválido
+        alert("Por favor, insira um valor válido para ε (ex: 0.1, 0.25)");
+        buckets = 0; // Reseta os buckets
+        return;
+    }
+    document.querySelector('button#startButton').classList.remove('turnedOff');
+     for (let i = 0; i < buckets; i++) {
+         generateBoxOnStream();
+     }
+    
+    // Atualiza as variáveis globais DEPOIS de criar as caixas
+     caixas = document.querySelectorAll('#stream .element');
+     numeros = document.getElementsByClassName('number');
+});
+
+// Função auxiliar para o listener gerador das caixa
+function generateBoxOnStream() {
+    let newBox = document.createElement('div');
+    let paragraphInsideNewElement = document.createElement('p');
+
+    // Atribuição das classes de cada novo elemento
+    newBox.classList.add('element');
+    paragraphInsideNewElement.classList.add('number');
+
+    // Coloca o parágrafo dentro da caixa e em seguida coloca tudo dentro da stream
+    newBox.appendChild(paragraphInsideNewElement);
+    document.querySelector('div#stream').appendChild(newBox);
+}   
