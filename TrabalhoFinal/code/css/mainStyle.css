@@ -342,3 +342,34 @@ footer ul::before {
         color: var(--footer-text); /* Muda a cor para combinar com o resto */
     }
 }
+
+/* ---------------------------------- */
+/* 🎥 Estilos para o Vídeo Auxiliar    */
+/* ---------------------------------- */
+
+/* Estiliza o parágrafo da seção de vídeo */
+#video p {
+    text-align: center; /* Centraliza o texto de introdução */
+    margin-bottom: 20px;
+}
+
+#video iframe {
+    /* 1. Responsividade e Proporção */
+    width: 100%; /* Faz o vídeo ocupar 100% da largura do container */
+    
+    /* Usa a proporção 16:9 (altura = 9/16 * largura) */
+    /* 560 / 315 é 16:9 */
+    aspect-ratio: 16 / 9; 
+    
+    /* Define uma largura máxima (tamanho original do embed) */
+    max-width: 560px; 
+    
+    /* 2. Centralização e Layout */
+    display: block; /* Necessário para aplicar margem horizontal automática */
+    margin: 0 auto; /* Centraliza o iframe na seção */
+    
+    /* 3. Estilo Visual (Consistente com o site) */
+    border: 1px solid var(--border-light);
+    border-radius: 8px; /* Mesma borda das outras seções/artigos */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
